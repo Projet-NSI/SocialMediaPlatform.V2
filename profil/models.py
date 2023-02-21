@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class User(models.Model):
     idUser = models.PositiveIntegerField(primary_key=True)
     nom = models.CharField(max_length=26)
@@ -9,6 +8,9 @@ class User(models.Model):
     mdp = models.CharField(max_length=100)
     dateInscription = models.DateTimeField()
     dateNaissance = models.DateField()
+
+    def __str__(self):
+        return f'Account : {self.dateInscription.strftime("%d/%b/%Y")}'
 
 class Profile(models.Model):
     pseudo = models.CharField(max_length=40)
