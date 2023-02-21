@@ -20,7 +20,7 @@ def signup_view(request):
             return redirect('home') # Redirection page d'accueil
     else:
         form = UserCreationForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'templates/landing/signup.html', {'form': form})
 
 
 def login_view(request):
@@ -33,7 +33,7 @@ def login_view(request):
             return redirect('home') # Redirection page d'accueil
     else:
         form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'templates/landing/login.html', {'form': form})
 
 
 def logout_view(request):

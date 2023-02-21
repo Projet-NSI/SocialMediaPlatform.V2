@@ -43,7 +43,6 @@ AUTHENTICATION_BACKENDS = [
 
 INSTALLED_APPS = [
     'profil',
-    'landing',
 
     'allauth',
     'allauth.account',
