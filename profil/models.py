@@ -37,7 +37,7 @@ class User_Subscriber(models.Model):
 class Post(models.Model):
     idPost = models.PositiveIntegerField()
     contenu = models.TextField(max_length=1500)
-    lienExterne = models.AutoField(default=None)
+    image = models.ImageField()
     idUser = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.PositiveBigIntegerField()
     comments = models.PositiveBigIntegerField()
@@ -57,7 +57,7 @@ class Post_Comment(models.Model):
 class Message(models.Model):
     idPost = models.PositiveIntegerField()
     contenu = models.TextField(max_length=1500)
-    lienExterne = models.AutoField(default=None)
+    lienExterne = models.ImageField()
     idUser = models.ForeignKey(User, on_delete=models.CASCADE)
     idRecipient = models.PositiveBigIntegerField()
     sendTime = models.DateTimeField()
