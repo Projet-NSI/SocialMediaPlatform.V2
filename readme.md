@@ -20,26 +20,26 @@ Les modèles de données comprennent des objets pour les utilisateurs, les messa
 
 ## Modèles conceptuels
 
-![1](/Mod%C3%A8les/S'abonner_%C3%A0.png)
-![2](/Mod%C3%A8les/Etre_Suivi_Par.png)
-![3](/Mod%C3%A8les/Commenter_Sur.png)
-![4](/Mod%C3%A8les/Envoyer_%C3%A0.png)
-![5](/Mod%C3%A8les/Recevoir.png)
-![6](/Mod%C3%A8les/Profile-User-C.png)
-![7](/Mod%C3%A8les/Profile-Post-C.png)
+![1](/assets/models/S'abonner_%C3%A0.png)
+![2](/assets/models/Etre_Suivi_Par.png)
+![3](/assets/models/Commenter_Sur.png)
+![4](/assets/models/Envoyer_%C3%A0.png)
+![5](/assets/models/Recevoir.png)
+![6](/assets/models/Profile-User-C.png)
+![7](/assets/models/Profile-Post-C.png)
 
 ## Modèles relationnels
 
-![1](/Mod%C3%A8les/User-Profile-Rel.png)
-![2](/Mod%C3%A8les/Message-Destinataire-Rel.png)
+![1](/assets/models/User-Profile-Rel.png)
+![2](/assets/models/Message-Destinataire-Rel.png)
 >Remarque:
 un message peut être destiné à plusieurs utilisateurs, donc il faut créer une table de liaison
 
-![3](/Mod%C3%A8les/Post-Comment-Rel.png)
-![4](/Mod%C3%A8les/Post-Profile-Rel.png)
-![5](/Mod%C3%A8les/User-Notif-Rel.png)
-![6](/Mod%C3%A8les/User-Subscriber-Rel.png)
-![7](/Mod%C3%A8les/User-Subscription-Rel.png)
+![3](/assets/models/Post-Comment-Rel.png)
+![4](/assets/models/Post-Profile-Rel.png)
+![5](/assets/models/User-Notif-Rel.png)
+![6](/assets/models/User-Subscriber-Rel.png)
+![7](/assets/models/User-Subscription-Rel.png)
 
 ## Fonctionnalités
 

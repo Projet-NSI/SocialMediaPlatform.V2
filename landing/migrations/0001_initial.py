@@ -77,28 +77,28 @@ class Migration(migrations.Migration):
             name='User_Subscription',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('idSubscription', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profil.abonnement')),
-                ('idUser', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profil.user')),
+                ('idSubscription', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='landing.abonnement')),
+                ('idUser', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='landing.user')),
             ],
         ),
         migrations.CreateModel(
             name='User_Subscriber',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('idSubscriber', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profil.abonne')),
-                ('idUser', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profil.user')),
+                ('idSubscriber', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='landing.abonne')),
+                ('idUser', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='landing.user')),
             ],
         ),
         migrations.CreateModel(
             name='Recipient_Message',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('idMessage', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profil.message')),
-                ('idRecipient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profil.user')),
+                ('idMessage', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='landing.message')),
+                ('idRecipient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='landing.user')),
             ],
         ),
         migrations.CreateModel(
-            name='Profile',
+            name='landinge',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('pseudo', models.CharField(max_length=40)),
@@ -106,30 +106,30 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(max_length=300)),
                 ('abonnements', models.PositiveBigIntegerField()),
                 ('abonnes', models.PositiveBigIntegerField()),
-                ('idUser', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profil.user')),
+                ('idUser', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='landing.user')),
             ],
         ),
         migrations.CreateModel(
             name='Post_Comment',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('idComment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profil.commentaire')),
-                ('idPost', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profil.post')),
+                ('idComment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='landing.commentaire')),
+                ('idPost', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='landing.post')),
             ],
         ),
         migrations.AddField(
             model_name='post',
             name='idUser',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profil.user'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='landing.user'),
         ),
         migrations.AddField(
             model_name='message',
             name='idUser',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profil.user'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='landing.user'),
         ),
         migrations.AddField(
             model_name='commentaire',
             name='idAuteur',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profil.user'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='landing.user'),
         ),
     ]
