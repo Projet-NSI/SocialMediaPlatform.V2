@@ -2,22 +2,22 @@
 
 {% load i18n %}
 
-{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+{% block head_title %}{% trans "Vérifier Son Adresse E-mail" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Verify Your E-mail Address" %}</h1>
+<h1>{% trans "Vérifier Son Adresse E-mail" %}</h1>
 
 {% url 'account_email' as email_url %}
 
-<p>{% blocktrans %}This part of the site requires us to verify that
-you are who you claim to be. For this purpose, we require that you
-verify ownership of your e-mail address. {% endblocktrans %}</p>
+<p>{% blocktrans %}Cette partie du site nous oblige à vérifier que
+    vous êtes bien celui ou celle que vous prétendez être. À cette fin, nous vous demandons de
+    vérifiez la propriété de votre adresse électronique. {% endblocktrans %}</p>
 
-<p>{% blocktrans %}We have sent an e-mail to you for
-verification. Please click on the link inside this e-mail. Please
-contact us if you do not receive it within a few minutes.{% endblocktrans %}</p>
+<p>{% blocktrans %}Nous vous avons envoyé un e-mail pour
+    vérification. Veuillez cliquer sur le lien contenu dans cet e-mail. Veuillez
+    contactez-nous si vous ne le recevez pas dans les minutes qui suivent. {% endblocktrans %}</p>
 
-<p>{% blocktrans %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your e-mail address</a>.{% endblocktrans %}</p>
+<p>{% blocktrans %}<strong>Remarque:</strong> vous avez toujours la possibilité de <a href="{{ email_url }}">changer votre adresse e-mail</a>.{% endblocktrans %}</p>
 
 
 {% endblock %}

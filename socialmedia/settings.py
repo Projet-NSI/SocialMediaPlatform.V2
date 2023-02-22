@@ -43,6 +43,7 @@ AUTHENTICATION_BACKENDS = [
 
 INSTALLED_APPS = [
     'landing',
+    'social',
 
     'crispy_forms',
     'crispy_bootstrap5',
