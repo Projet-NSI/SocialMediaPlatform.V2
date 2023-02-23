@@ -17,11 +17,12 @@ class PostListView(View):
         return render(request, 'social/post_list.html', context)
     def post(self, request, *args, **kwargs):
         posts = Post.objects.all().order_by('-sendingTime')
-        form = PostForm(request.POST)
+        form = PostForm(request.POST) # réinitialiser le formulaire après l'enregistrement réussi
 
         if form.is_valid():
             new_post = form.save(commit=False)
-            new_post.author = request.user
+            new_post.auteur = request.user
+            new_post.contenu = form.cleaned_data.get('contenu')
             new_post.save()
 
         context = {
