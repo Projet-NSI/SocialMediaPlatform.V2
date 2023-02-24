@@ -43,11 +43,11 @@ un message peut être destiné à plusieurs utilisateurs, donc il faut créer un
 
 ## Fonctionnalités
 
-- [ ] Obtention des données de l'utilisateur
+- [x] Obtention des données de l'utilisateur
 - [ ] Création de comptes utilisateur (Profil) 
 - [ ] Publication de messages
-- [ ] Publication de posts
-- [ ] Commentaires sur les posts
+- [x] Publication de posts
+- [x] Commentaires sur les posts
 - [ ] Gestion des abonnements
 - [ ] Réception de notifications
 - [ ] Liker des posts (et commentaires)
@@ -56,7 +56,7 @@ un message peut être destiné à plusieurs utilisateurs, donc il faut créer un
 
 ## Points importants
 
-- [ ] Sécurité des données utilisateur
+- [x] Sécurité des données utilisateur
 - [ ] Optimisation de la vitesse pour prendre en charge les volumes élevés de trafic
 - [ ] Mise en place d'une interface utilisateur conviviale
 - [ ] Gestion des erreurs
