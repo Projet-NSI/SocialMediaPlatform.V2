@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-dn&rcsl5hp4n0_mk)5=vhrke)jb#mr*h5*!cp3*^rczy4%z%i0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://tiborz08.github.io/Projet-NSI/SocialMediaPlatform.V2/']
 
 
 
