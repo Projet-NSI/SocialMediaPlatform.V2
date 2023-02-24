@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['https://tiborz08.github.io/Projet-NSI/SocialMediaPlatform.V2/']
 
-
+HOME_PAGE = 'landing/index.html'
 
 # Application definition
 
