@@ -20,26 +20,26 @@ Les modèles de données comprennent des objets pour les utilisateurs, les messa
 
 ## Modèles conceptuels
 
-![1](/assets/models/S'abonner_%C3%A0.png)
-![2](/assets/models/Etre_Suivi_Par.png)
-![3](/assets/models/Commenter_Sur.png)
-![4](/assets/models/Envoyer_%C3%A0.png)
-![5](/assets/models/Recevoir.png)
-![6](/assets/models/Profile-User-C.png)
-![7](/assets/models/Profile-Post-C.png)
+![1](/media/uploads/models/S'abonner_%C3%A0.png)
+![2](/media/uploads/models/Etre_Suivi_Par.png)
+![3](/media/uploads/models/Commenter_Sur.png)
+![4](/media/uploads/models/Envoyer_%C3%A0.png)
+![5](/media/uploads/models/Recevoir.png)
+![6](/media/uploads/models/Profile-User-C.png)
+![7](/media/uploads/models/Profile-Post-C.png)
 
 ## Modèles relationnels
 
-![1](/assets/models/User-Profile-Rel.png)
-![2](/assets/models/Message-Destinataire-Rel.png)
+![1](/media/uploads/models/User-Profile-Rel.png)
+![2](/media/uploads/models/Message-Destinataire-Rel.png)
 >Remarque:
 un message peut être destiné à plusieurs utilisateurs, donc il faut créer une table de liaison
 
-![3](/assets/models/Post-Comment-Rel.png)
-![4](/assets/models/Post-Profile-Rel.png)
-![5](/assets/models/User-Notif-Rel.png)
-![6](/assets/models/User-Subscriber-Rel.png)
-![7](/assets/models/User-Subscription-Rel.png)
+![3](/media/uploads/models/Post-Comment-Rel.png)
+![4](/media/uploads/models/Post-Profile-Rel.png)
+![5](/media/uploads/models/User-Notif-Rel.png)
+![6](/media/uploads/models/User-Subscriber-Rel.png)
+![7](/media/uploads/models/User-Subscription-Rel.png)
 
 ## Fonctionnalités
 
@@ -65,3 +65,10 @@ un message peut être destiné à plusieurs utilisateurs, donc il faut créer un
 
 
 # Obtention de données de l'utilisateur
+
+
+# Messages et Commentaires
+
+Nous allons voir les fonctionnalité des messages et des commentaires en ajoutant la possibilité de modifier un message, de supprimer un message, d'ajouter un commentaire et de supprimer un commentaire.  Nous allons également restreindre les différentes vues que nous avons créées afin que seuls les utilisateurs qui doivent y avoir accès puissent le faire.
+
+## Envoyer des messages
