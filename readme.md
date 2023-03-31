@@ -8,7 +8,7 @@
 
 ## Langages 
 
-Python avec Django / SQLite / HTML / CSS
+Python avec Django / SQLite / HTML / CSS (Bootstrap5)
 
 ## Relation avec le programme terminale
 
@@ -16,49 +16,29 @@ Bases de données / Python / Programmation objet
 
 # Modèles
 
-Les modèles de données comprennent des objets pour les utilisateurs, les messages, les abonnements et les notifications.
+Les modèles de données comprennent les utilisateurs, les profils, les messages, les commentaires.
 
-## Modèles conceptuels
-
-![1](/media/uploads/models/S'abonner_%C3%A0.png)
-![2](/media/uploads/models/Etre_Suivi_Par.png)
-![3](/media/uploads/models/Commenter_Sur.png)
-![4](/media/uploads/models/Envoyer_%C3%A0.png)
-![5](/media/uploads/models/Recevoir.png)
-![6](/media/uploads/models/Profile-User-C.png)
-![7](/media/uploads/models/Profile-Post-C.png)
-
-## Modèles relationnels
-
-![1](/media/uploads/models/User-Profile-Rel.png)
-![2](/media/uploads/models/Message-Destinataire-Rel.png)
->Remarque:
-un message peut être destiné à plusieurs utilisateurs, donc il faut créer une table de liaison
-
-![3](/media/uploads/models/Post-Comment-Rel.png)
-![4](/media/uploads/models/Post-Profile-Rel.png)
-![5](/media/uploads/models/User-Notif-Rel.png)
-![6](/media/uploads/models/User-Subscriber-Rel.png)
-![7](/media/uploads/models/User-Subscription-Rel.png)
+![1](/media/uploads/models/modeles.png)
 
 ## Fonctionnalités
 
 - [x] Obtention des données de l'utilisateur
-- [ ] Création de comptes utilisateur (Profil) 
-- [ ] Publication de messages
+- [x] Deconnexion du compte utilisateur
+- [x] Création de comptes utilisateur (Profil) 
 - [x] Publication de posts
+- [x] Publication de commentaires
+- [x] Modification de posts/commentaires
+- [x] Suppression de posts/commentaires
 - [x] Commentaires sur les posts
 - [ ] Gestion des abonnements
-- [ ] Réception de notifications
 - [ ] Liker des posts (et commentaires)
 - [ ] Recherche d'autres utilisateurs à suivre
 
 
 ## Points importants
 
-- [x] Sécurité des données utilisateur
-- [ ] Optimisation de la vitesse pour prendre en charge les volumes élevés de trafic
-- [ ] Mise en place d'une interface utilisateur conviviale
+- [ ] Sécurité des données utilisateur
+- [x] Mise en place d'une interface utilisateur conviviale
 - [ ] Gestion des erreurs
 
 ## Difficultés rencontrées
@@ -66,9 +46,13 @@ un message peut être destiné à plusieurs utilisateurs, donc il faut créer un
 
 # Obtention de données de l'utilisateur
 
+Nous utilisons django-allauth[^1] pour les récupérations des données. 
 
-# Messages et Commentaires
 
-Nous allons voir les fonctionnalité des messages et des commentaires en ajoutant la possibilité de modifier un message, de supprimer un message, d'ajouter un commentaire et de supprimer un commentaire.  Nous allons également restreindre les différentes vues que nous avons créées afin que seuls les utilisateurs qui doivent y avoir accès puissent le faire.
+[^1]: Django-allauth est un package de Django qui fournit des fonctionnalités
+d'authentification pour les utilisateurs. Il inclut des formulaires de création de compte, de
+connexion, de récupération de mot de passe, et des pages HTML pour gérer les
+comptes d'utilisateurs. Cela nous est très utile pour notre réseau social qui nécessite
+des fonctionnalités d'authentification et de gestion des utilisateurs.
 
-## Envoyer des messages
+
