@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-dn&rcsl5hp4n0_mk)5=vhrke)jb#mr*h5*!cp3*^rczy4%z%i0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://projet-nsi.github.io/SocialMediaPlatform.V2/','127.0.0.1']
+ALLOWED_HOSTS = ['https://projet-nsi.github.io/SocialMediaPlatform.V2/','127.0.0.1','socialmediaplatformv2-2.simonzeru.repl.co']
 
 HOME_PAGE = BASE_DIR / 'templates/landing/index.html'
 
@@ -145,7 +145,7 @@ STATIC_URL = 'static/'
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
-
+CSRF_TRUSTED_ORIGINS = ['https://socialmediaplatformv2-3.simonzeru.repl.co']
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 LOGIN_REDIRECT_URL = 'post-list'
