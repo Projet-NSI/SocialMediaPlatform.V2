@@ -1,26 +1,36 @@
-# Social Media Platform
+# Social Media Platform - Projet NSI:
 
+![home](https://i.ibb.co/2ZgswzL/Capture-d-e-cran-2023-04-03-a-21-07-43.png)
 
+# Sommaire : 
 
-# Présentation
+- Cahier des charges
+- Spécifications techniques
+- Modalités de mise en œuvre
+- Conclusion 
+- Bibliographie
 
-"Social media website avec Django" est une application visant à créer un réseau social simpliste, à l'aide du framework Django
+# I - Cahier des charges
 
-## Langages 
+## Présentation
 
-Python avec Django / SQLite / HTML / CSS (Bootstrap5)
+*Social media website* avec Django est une application visant à créer un réseau social simpliste, à l'aide du framework Django[^1], ce projet comportera donc de la programmation objet et une base de données.
 
-## Relation avec le programme terminale
+[^1]: Django peut être séparé en deux parties clés : les URLs et les vues. Ce sont deux concepts pour gérer les requêtes des utilisateurs. Les URLs sont des adresses web uniques qui identifient une vue dans votre application web. Les vues sont des fonctions Python qui répondent aux requêtes des utilisateurs et renvoient une réponse HTTP, généralement une page web.
 
-Bases de données / Python / Programmation objet
+### Langages 
 
-# Modèles
+Python avec Django / SQLite / HTML / CSS (Bootstrap5[^2])
 
-Les modèles de données comprennent les utilisateurs, les profils, les messages, les commentaires.
+[^2]: Bootstrap 5 est un framework front-end open-source qui permet de créer des interfaces utilisateur pour des sites web et des applications web. Il fournit des styles CSS pré-construits pour des éléments tels que des boutons, des formulaires, des tables, etc., ainsi que des composants JavaScript interactifs tels que des menus déroulants, des modales, des carrousels, etc. C’est très pratique pour notre projet car cela nous permet de créer rapidement et facilement des interfaces utilisateur attrayantes et cohérentes.
 
-![1](/media/uploads/models/modeles_social.png)
+## Modèles
 
-## Fonctionnalités
+Les modèles de données comprennent les utilisateurs, les profils, les messages et les commentaires.
+
+![Schema relationnel](https://i.ibb.co/y02TJd2/modeles-social.png)
+
+### Fonctionnalités
 
 - [x] Obtention des données de l'utilisateur
 - [x] Deconnexion du compte utilisateur
@@ -32,8 +42,6 @@ Les modèles de données comprennent les utilisateurs, les profils, les messages
 - [x] Commentaires sur les posts
 - [ ] Gestion des abonnements
 - [ ] Liker des posts (et commentaires)
-- [ ] Recherche d'autres utilisateurs à suivre
-
 
 ## Points importants
 
@@ -41,23 +49,86 @@ Les modèles de données comprennent les utilisateurs, les profils, les messages
 - [x] Mise en place d'une interface utilisateur conviviale
 - [ ] Gestion des erreurs
 
-## Difficultés rencontrées
+## Exemple 
+
+Un utilisateur s'inscrit, crée son profil, publie et commente un post, suit d'autres utilisateurs pour voir leurs profils et communiquer avec eux par message et reçoit une notification lorsque ces utilisateurs publient de nouveaux messages.
+
+# II - Spécifications techniques
+
+## Types de fichiers
+
+Notre programme traitera des fichiers PNG, JPG, GIF, MP4, MP3 et HTML.
+
+## Arborescence
+
+Grâce à Django, nos fichiers sont répartis de base dans plusieurs applications (ou modules) et un projet.
+
+Notre début de structure se façonne ainsi 
+
+- landing
+    - templates
+        - landing
+            - base.html
+            - index.html
+            - navbar.html
+    - admin.py
+    - apps copy.py
+    - tests.py
+    - apps.py
+    - models.py
+    - urls.py
+    - views.py
+- social
+    - templates
+        - social
+            - comment_delete.html
+            ...
+            (voir github)
+    - admin.py
+    - apps copy.py
+    - tests.py
+    - apps.py
+    - models.py
+    - urls.py
+    - views.py
+- socialmedia
+    - settings.py
+    ...
+- media
+    - uploads
+        - logos
+            ...
+        - models
+            ...
+        - profile_pictures
+            ...
+- templates
+    ...
+- db.sqlite3
+- manage.py
+- readme.md
+- requirements.txt
+
+> Remarque : nous récupéré un module *templates* en dessous qui comprends toutes les pages pré construites pour les connexions et inscriptions à l’aide de django-allauth (plusieurs grandes entreprises comme google, instagram, twitter utilisent django-allauth, c’est l’une des bibliothèque les plus efficace.)
+> *socialmedia* est le nom de notre projet Django. Il comprend notamment les settings.py et les urls. 
+> *landing* et *social* sont des applications de notre projet Django
 
 
-# Obtention de données de l'utilisateur
+## Obtention de données de l'utilisateur
 
-Nous utilisons django-allauth[^1] pour les récupérations des données. 
+Nous utilisons django-allauth[^3] pour les récupérations des données. 
 
-[^1]: Django-allauth est un package de Django qui fournit des fonctionnalités
+[^3]: Django-allauth est un package de Django qui fournit des fonctionnalités
 d'authentification pour les utilisateurs. Il inclut des formulaires de création de compte, de
 connexion, de récupération de mot de passe, et des pages HTML pour gérer les
 comptes d'utilisateurs. Cela nous est très utile pour notre réseau social qui nécessite
 des fonctionnalités d'authentification et de gestion des utilisateurs.
 
-# Fonctionnement d'une application Django
-Dans une application il y a fichiers par defaut qui sont:
+## Fonctionnement d'une application Django
 
-## migrations:
+Dans une application il y a des modules par défaut qui sont:
+
+### Migrations.py:
 
 Elle permet d'apporter des modifications à des modèles dans un schéma de base de donnés 
 ```
@@ -67,19 +138,43 @@ python3 manage.py
 ```
 python3 manage.py makemigrations
 ```
-> résponsable de la création de nouvelles migrations en fonction des modifications que vous avez apportées aux modèles.
+> responsable de la création de nouvelles migrations en fonction des modifications que vous avez apportées aux modèles.
 
 ```
 python3 manage.py migrate
 ```
-> résponsable de l’exécution et de l’annulation des migrations (sauvegardes).
+> responsable de l’exécution et de l’annulation des migrations (sauvegardes).
 
-## settings:
-c'est le fichier qui s'occupe des réglages de l'application
+## Settings.py
+
+C'est le fichier qui s'occupe des réglages de l'application
 elle a par exemple une liste avec tout les adresses autorisés
 
+Dans le fichier settings.py, il y a notamment les applications installées, dont ‘landing’ et les pages allauth, crispy_forms[^4]
 
-# Modules views.py
+```
+INSTALLED_APPS = [
+    'landing',
+    'social',
+
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.sites',
+]
+```
+
+[^4]: crispy_forms est une API pour récupérer les données d’un formulaire
+## Modules views.py
 
 Nous utilisons différents modules:
 
@@ -93,7 +188,7 @@ from django.views.generic.edit import UpdateView, DeleteView
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 ```
 
-## Render
+### Render
 
 ```
 return render(request, 'social/post_detail.html', context)
@@ -102,37 +197,41 @@ return render(request, 'social/post_detail.html', context)
 
 Render est un module de django.shortcuts
 
-Les moteurs de rendu personnalisés doivent implémenter une méthode render(template_name, context, request=None). Cette méthode doit renvoyer un modèle rendu (sous la forme d'une chaîne de caractères) ou soulever la question TemplateDoesNotExist.
+Les moteurs de rendu personnalisés doivent implémenter une méthode render(template_name, context, request=None). Cette méthode doit renvoyer un modèle rendu (sous la forme d'une chaîne de caractères) ou soulever la question *TemplateDoesNotExist*.
 
-# Views.py
+## Views.py
 
-## View
+C'est le module permettant de stocker les vues (fonctions) pour notre projet Django.
+
+### View
 
 ```
 class PostListView(View):
 ```
 
-## UpdateView
+Le module *View* permet d'itentifier la fonction comme étant une vue du projet.
+
+### UpdateView
 
 UpdateView est un module de django.view.generic.edit
 
-UpdateView est une vue qui affiche un formulaire de modification d'un objet existant.
+UpdateView est une vue qui affiche un formulaire de **modification d'un objet existant**.
 
-## DeleteView
+### DeleteView
 
 UpdateView est un module de django.view.generic.edit
 
-DeleteView est une vue qui affiche une page de confirmation et supprime un fichier existant.
+DeleteView est une vue qui affiche une **page de confirmation** et supprime un fichier existant.
 
-## UserPassesTestMixin
+### UserPassesTestMixin
 
-Module de Django permettant de faire passer des tests de verifications aux utilisateurs pour gérer leurs possibilités 
+Module de Django permettant de faire passer des **tests de verifications** aux utilisateurs pour gérer leurs possibilités 
 
-## LoginRequiredMixin
+### LoginRequiredMixin
 
-Module de Django vérifiant si l’utilisateur est connecté (ce mixin vérifie que les AUTHENTICATION_BACKENDS par défaut rejettent les utilisateurs inactifs.)
+Module de Django vérifiant si l’utilisateur est connecté (ce mixin vérifie que les *AUTHENTICATION_BACKENDS* par défaut rejettent les utilisateurs inactifs.)
 
-## Reverse_lazy()
+### Reverse_lazy()
 
 ```
 def get_success_url(self):
@@ -140,24 +239,26 @@ def get_success_url(self):
         return reverse_lazy('post-detail', kwargs={'pk': pk})
 ```
 
-Fonction utile pour procéder à une résolution d’URL avant le chargement de la configuration des URLs.
+Fonction utile pour procéder à une résolution d’URL **avant le chargement** de la configuration des *URLs*.
 
 Dans notre projet, nous l'utilisons pour les mises à jour et supression de posts et commentaires, ou encore dans la création d'un profil 
 
-## Kwargs et Args
+### Kwargs et Args
 
 ```
  def post(self, request, pk, *args, **kwargs):
         post = Post.objects.get(pk=pk)
         form = CommentForm(request.POST)
 ```
-> *args permet de passer un nombre arbitraire d'arguments positionnels à votre fonction.
-> 
-> **kwargs permet de gérer les arguments nommés que vous n'avez pas définis à l'avance.
+Les paramètres de la fonction *post* 'args' et 'kwargs' permettent de passer plusieurs arguments ou des arguments de mots-clés à une fonction
+> *args permet de passer un nombre arbitraire d'arguments positionnels à une fonction.
+> **kwargs permet de gérer les arguments nommés qu'on a pas définis à l'avance.
 
-# Models.py
+## Models.py
 
-## User
+Les modèles de Django sont une façon de représenter les données dans une base de données relationnelle. Nous les utilisons pour stocker et récupérer des données dans la base de données SQLite3, fournie avec Django.
+
+### User
 
 Les objets utilisateurs sont au cœur du système d'authentification.
 
@@ -169,20 +270,21 @@ Les principaux attributs de l'utilisateur par défaut sont les suivants :
 - prenom
 - nom
 
-## Timezone
+### Timezone
 
 ```
 sendingTime = models.DateTimeField(default=timezone.now)
 ```
 
-Django inclut un paramètre TIME_ZONE dont la valeur par défaut est l'horaire 'UTC'. Il se trouve dans le fichier de configuration 'settings.py':
+Django inclut un paramètre *TIME_ZONE* dont la valeur par défaut est l'horaire 'UTC'. Il se trouve dans le fichier de configuration 'settings.py':
 ```
 TIME_ZONE = 'UTC'
 ```
 
-# Urls.py
+## Urls.py
 
-C'est le fichier qui permet de stocker les chemins à l'aide du module path qui sert à récuperer des chemins et de les transformer en variable:
+C'est le fichier qui permet de stocker les chemins à l'aide du module *path* qui sert à récuperer des chemins et de les transformer en variable:
+
 ```
 from django.urls import path
 urlpatterns = [
@@ -196,7 +298,7 @@ urlpatterns = [
 ]
 ```
 
-# Forms.py
+## Forms.py
 
 ```
 class PostForm(forms.ModelForm):
@@ -212,15 +314,64 @@ class PostForm(forms.ModelForm):
         fields = ['contenu']
 ```
 
-Django gère trois parties distinctes du travail induit par les formulaires dans forms.py:
+Django gère **trois parties** distinctes du travail induit par les formulaires dans forms.py:
 
 - préparation et restructuration des données en vue de leur présentation
 - création des formulaires HTML pour les données
 - réception et traitement des formulaires et des données envoyés par le client
 
-# Admin.py
+## Admin.py
+
+```
+from django.contrib import admin
+from .models import Post, UserProfile
+# Register your models here.
+
+admin.site.register(Post)
+admin.site.register(UserProfile)
+```
+
+Le fichier admin.py sert à **enregistrer** les modèles dans le projet Django (base de donnée)
+
+# III - Modalités de mise en oeuvre 
+
+On utilise le langage **Python** à l’aide de son framework **Django** pour le développement back-end, puis du SQLite pour la partie base de données du réseau social.
+
+Pour la partie front-end nous utilisons du **HTML** et du CSS à l’aide du framework **Bootstrap 5**, pour simplifier la tâche.
+
+# Bibliographie 
+
+### Doc de django allauth :
+
+https://django-allauth.readthedocs.io/en/latest/installation.html
+
+### Stack overflow pour les erreurs par exemple : 
+
+https://stackoverflow.com/questions/65238459/templatedoesnotexist-at-users-register-bootstrap5-uni-form-html
+
+### Doc de Django : 
+
+https://docs.djangoproject.com/en/4.1/
+
+### Doc bootstrap 5 : 
+
+https://getbootstrap.com/docs/5.0/getting-started/introduction/
 
 
+### Penners django-aullauth social media template : 
 
+https://github.com/pennersr/django-allauth
+
+### Tuto django app : 
+
+https://www.youtube.com/watch?v=ns7cmSaiA9E&ab_channel=Docstring
+
+### strftime() : 
+
+https://www.programiz.com/python-programming/datetime/strftime
+
+### Font awesome : 
+
+https://fontawesome.com/
 
 
