@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.urls import reverse_lazy
 from .models import Post, Comment, UserProfile
@@ -108,11 +108,24 @@ class ProfileView(View):
         profile = UserProfile.objects.get(pk=pk)
         user = profile.user
         posts = Post.objects.filter(auteur=user).order_by('-sendingTime')
-
+        abonnes = profile.followers.all()
+        total_abonnes = len(abonnes)
+        if total_abonnes==0:
+            est_abonne = False
+        else:
+            for abonne in abonnes:
+                if abonne == request.user:
+                    est_abonne =  True
+                    break
+                else:
+                    est_abonne = False
+        
         context = {
             'user': user,
             'profile': profile,
-            'posts': posts
+            'posts': posts,
+            'total_abonnes': total_abonnes,
+            'est_abonne': est_abonne,
         }
 
         return render(request, 'social/profile.html', context)
@@ -129,3 +142,17 @@ class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         profile = self.get_object()
         return self.request.user == profile.user
+
+class AddFollower(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk)
+        profile.followers.add(request.user) #Fonction de Django déjà faite pour ajouter des abonnements
+
+        return redirect('profile', profile.pk)
+
+class RemoveFollower(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk)
+        profile.followers.remove(request.user) #Fonction de Django déjà faite pour retirer des abonnements
+
+        return redirect('profile', pk=profile.pk)

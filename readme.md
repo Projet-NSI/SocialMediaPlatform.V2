@@ -339,6 +339,16 @@ On utilise le langage **Python** à l’aide de son framework **Django** pour le
 
 Pour la partie front-end nous utilisons du **HTML** et du CSS à l’aide du framework **Bootstrap 5**, pour simplifier la tâche.
 
+Ce projet sera hébergé sur la plateforme **Github** sur le référentiel ici : 
+
+https://github.com/Projet-NSI/SocialMediaPlatform.V2
+
+Il y sera précisé à l’aide d’un fichier *README.md* toutes les **étapes clés** de notre projet, les objectifs et les fonctionnalités. Vous pourrez suivre à l’aide de notre référentiel **la configuration du projet et son évolution**.
+
+Vous avez **accès** à l'application ici : 
+
+https://socialmediaplatformv2-3.simonzeru.repl.co/
+
 # Bibliographie 
 
 ### Doc de django allauth :
