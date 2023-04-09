@@ -43,6 +43,8 @@
                             <i class="far fa-thumbs-down"> <span>{{ post.dislikes.all.count }}</span></i> <!--count permet de retourner la longueur de la liste des likes-->
                         </button>
                     </form>
+
+                    <a class="px-3" style="background-color: transparent; border: none; box-shadow: none;" href="{% url 'post-detail' post.pk %}"><i class="fas fa-comment" style="color:black;"></i></a>
                 </div>
             </div>
         </div>

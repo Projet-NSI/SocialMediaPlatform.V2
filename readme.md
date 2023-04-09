@@ -40,8 +40,9 @@ Les modèles de données comprennent les utilisateurs, les profils, les messages
 - [x] Modification de posts/commentaires
 - [x] Suppression de posts/commentaires
 - [x] Commentaires sur les posts
-- [ ] Gestion des abonnements
-- [ ] Liker des posts (et commentaires)
+- [x] Gestion des abonnements
+- [x] Liker des posts (et commentaires)
+- [ ] Recherche utilisateurs à suivre
 
 ## Points importants
 
@@ -256,6 +257,46 @@ Les paramètres de la fonction *post* 'args' et 'kwargs' permettent de passer pl
 > *args permet de passer un nombre arbitraire d'arguments positionnels à une fonction.
 > **kwargs permet de gérer les arguments nommés qu'on a pas définis à l'avance.
 
+### Redirect
+
+redirect(to, *args, permanent=False, **kwargs)¶
+
+Renvoie une réponse HttpResponseRedirect à l’URL correspondant aux paramètres transmis.
+
+Nous l'utilisons pour les fonctions d'ajouts et de retraits d'abonnements dans nos vues, en indiquant en paramètre l'URL du profil qui sera utilisée comme emplacement de redirection.
+
+```
+def post(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk)
+        profile.followers.add(request.user)
+
+        return redirect('profile', profile.pk)
+```
+
+### HttpResponserRedirect
+
+HttpResponseRedirect prend un seul paramètre : l’URL vers laquelle l’utilisateur va être redirigé (redirige vers une nouvelle URL).
+
+Nous l'utilisons dans nos vues pour les likes et dislikes pour rediriger l'utilisateur vers l'URL de la page où il se trouve.
+
+```
+next = request.POST.get('next','/')
+return HttpResponseRedirect(next)
+```
+
+### Crsf_token
+
+Django est livré avec une protection simple d’emploi contre les attaques de type Cross Site Request Forgeries. Lors de l’envoi d’un formulaire par la méthode POST et la protection CSRF active, nous devons obligatoirement utiliser la balise de gabarit csrf_token
+
+```
+<form method="POST">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <div class="d-grid gap-2">
+        <button class="btn btn-primary mt-3">Envoyer!</button>
+    </div>
+</form>
+```
 ## Models.py
 
 Les modèles de Django sont une façon de représenter les données dans une base de données relationnelle. Nous les utilisons pour stocker et récupérer des données dans la base de données SQLite3, fournie avec Django.
