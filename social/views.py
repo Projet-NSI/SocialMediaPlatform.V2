@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from .models import Post, Comment, UserProfile
 from .forms import PostForm, CommentForm
@@ -60,11 +61,39 @@ class PostDetailView(LoginRequiredMixin, View):
             new_comment.save()
         
         comments = Comment.objects.filter(post=post).order_by('-sendingTime')
+        likes = post.likes.all()
+        dislikes = post.dislikes.all()
+        total_likes = len(likes)
+        total_dislikes = len(dislikes)
+
+        if total_likes==0:
+            has_liked = False
+        if total_dislikes==0:
+            has_disliked = False
+        else:
+            for like in likes:
+                if like == request.user:
+                    has_liked =  True
+                    has_disliked = False
+                    break
+                else:
+                    has_liked = False
+            for dislike in dislikes:
+                if dislike == request.user:
+                    has_liked =  False
+                    has_disliked = True
+                    break
+                else:
+                    has_disliked = False
 
         context = {
             'post': post,
             'form': form,
             'comments': comments,
+            'total_likes': total_likes,
+            'total_dislikes': total_dislikes,
+            'has_liked': has_liked,
+            'has_disliked': has_disliked,
         }
 
         return render(request, 'social/post_detail.html', context)
@@ -110,16 +139,14 @@ class ProfileView(View):
         posts = Post.objects.filter(auteur=user).order_by('-sendingTime')
         abonnes = profile.followers.all()
         total_abonnes = len(abonnes)
-        if total_abonnes==0:
-            est_abonne = False
-        else:
-            for abonne in abonnes:
-                if abonne == request.user:
-                    est_abonne =  True
-                    break
-                else:
-                    est_abonne = False
-        
+
+        est_abonne = False
+
+        for abonne in abonnes:
+            if abonne == request.user:
+                est_abonne =  True
+                break
+
         context = {
             'user': user,
             'profile': profile,
@@ -156,3 +183,66 @@ class RemoveFollower(LoginRequiredMixin, View):
         profile.followers.remove(request.user) #Fonction de Django déjà faite pour retirer des abonnements
 
         return redirect('profile', pk=profile.pk)
+
+class Like(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        post = Post.objects.get(pk=pk)
+
+        dislikes = post.dislikes.all()
+        has_disliked = False
+
+        for dislike in dislikes:
+            if dislike == request.user:
+                has_disliked = True
+                break
+        
+        if has_disliked:
+            post.dislikes.remove(request.user)
+
+        likes = post.likes.all()
+        has_liked = False
+
+        for like in likes:
+            if like == request.user:
+                has_liked = True
+                break
+        
+        if not has_liked:
+            post.likes.add(request.user)
+        else:
+            post.likes.remove(request.user)
+
+        next = request.POST.get('next','/')
+        return HttpResponseRedirect(next)
+
+class Dislike(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        post = Post.objects.get(pk=pk)
+
+        likes = post.likes.all()
+        has_liked = False
+        for like in likes:
+            if like == request.user:
+                has_liked = False
+                break
+
+        if has_liked:
+            post.likes.remove(request.user)
+
+        dislikes = post.dislikes.all()
+        has_disliked = False
+
+        for dislike in dislikes:
+            if dislike == request.user:
+                has_disliked = True
+                break
+
+        if not has_disliked:
+            post.dislikes.add(request.user)
+        else:
+            post.dislikes.remove(request.user)
+        
+        next = request.POST.get('next','/')
+        return HttpResponseRedirect(next)
+
+        

@@ -6,9 +6,11 @@ from django.dispatch import receiver
 
 class Post(models.Model):
     idPost = models.AutoField(primary_key=True)
-    contenu = models.TextField(max_length=1500)
-    auteur = models.ForeignKey(User, on_delete=models.CASCADE)
+    contenu = models.TextField()
     sendingTime = models.DateTimeField(default=timezone.now)
+    auteur = models.ForeignKey(User, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, blank=True, related_name='likes')
+    dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
 
 class Comment(models.Model):
     comment = models.TextField()

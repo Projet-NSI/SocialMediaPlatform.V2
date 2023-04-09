@@ -211,6 +211,8 @@ class PostListView(View):
 
 Le module *View* permet d'itentifier la fonction comme étant une vue du projet.
 
+https://docs.djangoproject.com/en/4.1/ref/class-based-views/base/
+
 ### UpdateView
 
 UpdateView est un module de django.view.generic.edit
