@@ -65,19 +65,19 @@
             </p>
             <p>{{ comment.comment }}</p>
             <div class="d-flex flex-row">
-                <form method="POST" action="{% url 'like' post.pk %}">
+                <form method="POST" action="{% url 'comment-like' post.pk comment.pk %}">
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{ request.path }}"> <!--retourne sur la page actuelle après le clic-->
                     <button style="background-color: transparent; border: none; box-shadow: none;" type="submit">
-                        <i class="far fa-thumbs-up"> <span>{{ post.likes.all.count }}</span></i> <!--count permet de retourner la longueur de la liste des likes-->
+                        <i class="far fa-thumbs-up"> <span>{{ comment.likes.all.count }}</span></i> <!--count permet de retourner la longueur de la liste des likes-->
                     </button>
                 </form>
 
-                <form method="POST" action="{% url 'dislike' post.pk %}">
+                <form method="POST" action="{% url 'comment-dislike' post.pk comment.pk %}">
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{ request.path }}"> <!--retourne sur la page actuelle après le clic-->
                     <button style="background-color: transparent; border: none; box-shadow: none;" type="submit">
-                        <i class="far fa-thumbs-down"> <span>{{ post.dislikes.all.count }}</span></i> <!--count permet de retourner la longueur de la liste des likes-->
+                        <i class="far fa-thumbs-down"> <span>{{ comment.dislikes.all.count }}</span></i> <!--count permet de retourner la longueur de la liste des likes-->
                     </button>
                 </form>
             </div>

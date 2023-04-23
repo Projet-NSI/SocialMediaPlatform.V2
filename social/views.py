@@ -21,7 +21,8 @@ class PostListView(View):
         return render(request, 'social/post_list.html', context)
     def post(self, request, *args, **kwargs):
         posts = Post.objects.all().order_by('-sendingTime')
-        form = PostForm(request.POST) # réinitialiser le formulaire après l'enregistrement réussi
+        form = PostForm(request.POST, request.FILES) # réinitialiser le formulaire après l'enregistrement réussi
+        
 
         if form.is_valid():
             new_post = form.save(commit=False)
@@ -57,43 +58,15 @@ class PostDetailView(LoginRequiredMixin, View):
         if form.is_valid():
             new_comment = form.save(commit=False)
             new_comment.auteur = request.user
-            new_comment.post = post
-            new_comment.save()
+            new_comment.post = post 
+            new_comment.save() #Sauvegarde les attributs dans la base de données
         
         comments = Comment.objects.filter(post=post).order_by('-sendingTime')
-        likes = post.likes.all()
-        dislikes = post.dislikes.all()
-        total_likes = len(likes)
-        total_dislikes = len(dislikes)
-
-        if total_likes==0:
-            has_liked = False
-        if total_dislikes==0:
-            has_disliked = False
-        else:
-            for like in likes:
-                if like == request.user:
-                    has_liked =  True
-                    has_disliked = False
-                    break
-                else:
-                    has_liked = False
-            for dislike in dislikes:
-                if dislike == request.user:
-                    has_liked =  False
-                    has_disliked = True
-                    break
-                else:
-                    has_disliked = False
 
         context = {
             'post': post,
             'form': form,
             'comments': comments,
-            'total_likes': total_likes,
-            'total_dislikes': total_dislikes,
-            'has_liked': has_liked,
-            'has_disliked': has_disliked,
         }
 
         return render(request, 'social/post_detail.html', context)
@@ -245,4 +218,63 @@ class Dislike(LoginRequiredMixin, View):
         next = request.POST.get('next','/')
         return HttpResponseRedirect(next)
 
+class CommentLike(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        comment = Comment.objects.get(pk=pk)
+
+        dislikes = comment.dislikes.all()
+        has_disliked = False
+
+        for dislike in dislikes:
+            if dislike == request.user:
+                has_disliked = True
+                break
         
+        if has_disliked:
+            comment.dislikes.remove(request.user)
+
+        likes = comment.likes.all()
+        has_liked = False
+
+        for like in likes:
+            if like == request.user:
+                has_liked = True
+                break
+        
+        if not has_liked:
+            comment.likes.add(request.user)
+        else:
+            comment.likes.remove(request.user)
+
+        next = request.POST.get('next','/')
+        return HttpResponseRedirect(next)
+
+class CommentDislike(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        comment = Comment.objects.get(pk=pk)
+
+        likes = comment.likes.all()
+        has_liked = False
+        for like in likes:
+            if like == request.user:
+                has_liked = False
+                break
+
+        if has_liked:
+            comment.likes.remove(request.user)
+
+        dislikes = comment.dislikes.all()
+        has_disliked = False
+
+        for dislike in dislikes:
+            if dislike == request.user:
+                has_disliked = True
+                break
+
+        if not has_disliked:
+            comment.dislikes.add(request.user)
+        else:
+            comment.dislikes.remove(request.user)
+        
+        next = request.POST.get('next','/')
+        return HttpResponseRedirect(next)

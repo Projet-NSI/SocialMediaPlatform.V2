@@ -28,7 +28,9 @@ Python avec Django / SQLite / HTML / CSS (Bootstrap5[^2])
 
 Les modèles de données comprennent les utilisateurs, les profils, les messages et les commentaires.
 
-![Schema relationnel](https://i.ibb.co/y02TJd2/modeles-social.png)
+![Schema relationnel](https://i.ibb.co/bBVxFf0/modeles-social.png)
+
+> Remarque : La table *User* est integrée dans Django, elle a pour clé primaire son id qui identifie l'utilisateur de manière unique, qui permet ici aux tables *Post* et *Comment* d'interagir.
 
 ### Fonctionnalités
 
@@ -55,6 +57,19 @@ Les modèles de données comprennent les utilisateurs, les profils, les messages
 Un utilisateur s'inscrit, crée son profil, publie et commente un post, suit d'autres utilisateurs pour voir leurs profils et communiquer avec eux par message et reçoit une notification lorsque ces utilisateurs publient de nouveaux messages.
 
 # II - Spécifications techniques
+
+## Architecture client-server
+L'architecture client-server est composée de trois étapes : 
+
+- détailler le routage des URL pour associer les vues adaptées aux requêtes HTTP que le site devra traiter (y compris avec des informations encodées dans les URL).
+- définir les fonctions de visualisation et créer les pages HTML qui vont permettre de publier les informations à destination des utilisateurs du site.
+- créer les gabarits qui vont permettre de publier les données dans les vues.
+
+![2](media/uploads/models/basic-django.png)
+
+## Pages web
+
+Nous aurons à créer plusieurs pages web. Cela fait beaucoup d'éléments à maîtriser dans une seule section d'apprentissage de l'outil. Nous avons donc opté pour ne traiter dans cette section que de la page d'accueil et de traiter les autres pages dans une autre section du didacticiel. Cela permet, de mieux appréhender les composants comme le routage d'URL ou les vues et d'une manière générale le fonctionnement du modèle de Django.
 
 ## Types de fichiers
 
@@ -210,7 +225,7 @@ C'est le module permettant de stocker les vues (fonctions) pour notre projet Dja
 class PostListView(View):
 ```
 
-Le module *View* permet d'itentifier la fonction comme étant une vue du projet.
+Le module *View* est une classe parent pour les vues, qui possède différentes méthodes utiles pour celles-ci.
 
 https://docs.djangoproject.com/en/4.1/ref/class-based-views/base/
 
@@ -254,8 +269,8 @@ Dans notre projet, nous l'utilisons pour les mises à jour et supression de post
         form = CommentForm(request.POST)
 ```
 Les paramètres de la fonction *post* 'args' et 'kwargs' permettent de passer plusieurs arguments ou des arguments de mots-clés à une fonction
-> *args permet de passer un nombre arbitraire d'arguments positionnels à une fonction.
-> **kwargs permet de gérer les arguments nommés qu'on a pas définis à l'avance.
+> *args permet de passer plusieurs arguments à une fonction. Si on ajoute print(args), cela va retourner un tuple contenant tous les arguments.
+> **kwargs permet de passer des arguments de mots-clés à une fonction. Si on ajoute print(kwargs), cela va retourner un dictionnaire avec tous les arguments de mot clés
 
 ### Redirect
 
@@ -273,9 +288,9 @@ def post(self, request, pk, *args, **kwargs):
         return redirect('profile', profile.pk)
 ```
 
-### HttpResponserRedirect
+### HttpResponserRedirect()
 
-HttpResponseRedirect prend un seul paramètre : l’URL vers laquelle l’utilisateur va être redirigé (redirige vers une nouvelle URL).
+HttpResponseRedirect() prend un seul paramètre : l’URL vers laquelle l’utilisateur va être redirigé (redirige vers une nouvelle URL).
 
 Nous l'utilisons dans nos vues pour les likes et dislikes pour rediriger l'utilisateur vers l'URL de la page où il se trouve.
 

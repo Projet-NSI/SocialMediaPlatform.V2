@@ -10,7 +10,7 @@
         </div>
         <div class="row justify-content-center mt-3 mb-5">
             <div class="col-md-5 col-sm-12">
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form | crispy }}
                     <div class="d-grid gap-2">
@@ -22,9 +22,19 @@
         {% for post in post_list %}
         <div class="row justify-content-center mt-3">
             <div class="col-md-5 col-sm-12 border-bottom">
-                <p><a style="text-decoration:none;" class="text-primary" href="{% url 'profile' post.auteur.profile.pk %}">@{{ post.auteur }}</a> {{ post.sendingTime }}</p>
+                <div class="d-flex align-items-center">
+                    <a href="{% url 'profile' post.auteur.profile.pk %}">
+                        <img class="round-circle post-pdp" height="30" width="30" src="{{ post.auteur.profile.picture.url }}" />
+                    </a>
+                    <p class="post-text">
+                        <a class="text-primary post-link" href="{% url 'profile' post.auteur.profile.pk %}">@{{ post.auteur }}</a> {{ post.sendingTime }}
+                    </p>
+                </div>
                 <div class="position-relative">
                     <p>{{ post.contenu }}</p>
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" class="post-image"/>
+                    {% endif %}
                     <a class="stretched-link" href="{% url 'post-detail' post.pk %}"></a>
                 </div>
                 <div class="d-flex flex-row">
@@ -44,7 +54,8 @@
                         </button>
                     </form>
 
-                    <a class="px-3" style="background-color: transparent; border: none; box-shadow: none;" href="{% url 'post-detail' post.pk %}"><i class="fas fa-comment" style="color:black;"></i></a>
+                    <a class="px-3" style="background-color: transparent; border: none; box-shadow: none;" href="{% url 'post-detail' post.pk %}"><i class="far fa-comment-dots" style="color:black;"></i></a>
+
                 </div>
             </div>
         </div>
