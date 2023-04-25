@@ -11,7 +11,7 @@
     <div class="row justify-content-center mt-3">
         <div class="col-md-5 col-sm-12 border-bottom">
             <p>
-                <strong>{{ post.auteur }}</strong> {{ post.sendingTime }}
+                <a href="" class="text-primary post-link">@{{ post.auteur }}</a> {{ post.sendingTime }}
                 {% if request.user == post.auteur %}
                 <a href="{% url 'post-edit' post.pk %}" style="color: #333;"><i class="far fa-edit"></i></a>
                 <a href="{% url 'post-delete' post.pk %}" style="color: #333;"><i class="fas fa-trash"></i></a>
@@ -58,7 +58,7 @@
     <div class="row justify-content-center mt-3 mb-5">
         <div class="col-md-5 col-sm-12 border-bottom">
             <p>
-                <strong>{{ comment.auteur }}</strong> {{ comment.sendingTime }}
+                <a href="" class="text-primary post-link">@{{ comment.auteur }}</a> {{ comment.sendingTime }}
                 {% if request.user == comment.auteur %}
                 <a href="{% url 'comment-delete' post.pk comment.pk %}" style="color: #333;"><i class="fas fa-trash"></i></a>
                 {% endif %}
