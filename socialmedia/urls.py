@@ -18,12 +18,15 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+# URLS du projet
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('landing.urls')),
-    path('accounts/', include('allauth.urls')),
-    path('social/', include('social.urls')),
+    path('admin/', admin.site.urls), # Sur le chemin localhost:8000/admin, l'admin aura accès aux paramètres de l'application
+    path('', include('landing.urls')), # On a créer un fichier urls.py dans l'application landing pour faciliter les chemins relatifs, et include permet de relier les urls
+    path('accounts/', include('allauth.urls')), # On a créer un fichier urls.py dans l'application allauth pour faciliter les chemins relatifs, et include permet de relier les urls
+    path('social/', include('social.urls')), # On a créer un fichier urls.py dans l'application social pour faciliter les chemins relatifs, et include permet de relier les urls
 ]
 
+# Debogage
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import PostListView, PostDetailView, PostEditView, PostDeleteView, CommentDeleteView, ProfileView, ProfileEditView, AddFollower, RemoveFollower, Like, Dislike, CommentLike, CommentDislike
 
+#chemins des urls
 urlpatterns = [
     path('', PostListView.as_view(), name='post-list'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
@@ -16,3 +17,5 @@ urlpatterns = [
     path('profile/<int:pk>/followers/add', AddFollower.as_view(), name='add-follower'),
     path('profile/<int:pk>/followers/remove', RemoveFollower.as_view(), name='remove-follower'),
 ]
+# path('chemin', vue, nom relatif)
+# <int:pk> est la clé primaire retournée dans la vue correspondante

@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-dn&rcsl5hp4n0_mk)5=vhrke)jb#mr*h5*!cp3*^rczy4%z%i0
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*'] #hosts autorisés
 
 HOME_PAGE = BASE_DIR / 'templates/landing/index.html'
 
@@ -41,15 +41,18 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 INSTALLED_APPS = [
-    'landing',
-    'social',
+    #applications du projet
+    'landing',  
+    'social',   
 
-    'crispy_forms',
+    #modules
+    'crispy_forms', 
     'crispy_bootstrap5',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
 
+    #modules django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,7 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 ]
 
-SITE_ID = 1
+SITE_ID = 1 #id du site
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -76,7 +79,7 @@ ROOT_URLCONF = 'socialmedia.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'], #Dossier parent (par défaut) pour toutes les templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Europe/Paris'
+TIME_ZONE = 'Europe/Paris' #Horaire de l'application
 
 USE_I18N = True
 
@@ -139,13 +142,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "static", #Dossier parent (par défaut) pour les fichiers statiques
 ]
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media' #Dossier parent pour toutes les images
+MEDIA_URL = '/media/' #URL par défaut
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-9a97.up.railway.app']
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

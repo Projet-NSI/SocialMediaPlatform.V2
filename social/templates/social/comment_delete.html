@@ -1,8 +1,10 @@
-{% extends 'landing/base.html' %}
-{% load crispy_forms_tags %}
+<!--page de suppression de commentaires-->
+{% extends 'landing/base.html' %} <!--page enfant de base.html-->
+{% load crispy_forms_tags %} <!--style pour les formulaires-->
 
 {% block content %}
 <div class="container">
+    <!--bouton pour retourner à la page principale des posts-->
     <div class="row mt-5">
         <div class="col-md-3 col-sm-6">
             <a href="{% url 'post-detail' object.post.pk %}" class="btn btn-light">Retour à la page principale</a>
@@ -13,7 +15,7 @@
             <h5>Vous êtes sûr?</h5>
             <p>Vous êtes sur le point de supprimer votre message, cela ne peut être annulé.</p>
         <form method="POST">
-            {% csrf_token %}
+            {% csrf_token %} <!--sécurise les données-->
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-danger">Supprimer</button>
             </div>

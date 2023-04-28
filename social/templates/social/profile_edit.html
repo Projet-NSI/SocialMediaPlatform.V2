@@ -1,14 +1,16 @@
-{% extends 'landing/base.html' %}
+<!--page de modification du profil de l'utilisateur-->
+{% extends 'landing/base.html' %} <!--page enfant de base.html-->
 {% load crispy_forms_tags %}
 
 {% block content %}
 <div class="container">
+    <!--bouton pour retourner sur le profil de l'utilisateur-->
     <div class="row mt-5">
         <div class="col-md-5 col-sm-6">
             <a href="{% url 'profile' object.pk %}" class="btn btn-light">Retour</a>
         </div>
     </div>
-
+    <!--formulaire pour mettre à jour son profil-->
     <div class="row justify-content-center mt-3">
         <div class="col-md-5 col-sm-12 border-bottom">
             <h5>Mettez à jour votre profil</h5>

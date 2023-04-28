@@ -1,13 +1,15 @@
-{% extends 'landing/base.html' %}
+<!--page du profil d'un utilisateur-->
+{% extends 'landing/base.html' %} <!--page enfant de base.html-->
 
 {% block content %}
 <div class="container">
+    <!--bouton pour retourner à la page principale des posts-->
     <div class="row mt-5">
         <div class="col-md-3 col-sm-6">
             <a href="{% url 'post-list' %}" class="btn btn-light">Retour à la page principale</a>
         </div>
     </div>
-
+    <!--carte de présentation du profil-->
     <div class="row justify-content-center mt-5">
         <div class="card shadow-sm col-md-8 col-sm-12 border-bottom px-5 pt-3">
             <img src="{{ profile.picture.url }}" class="rounded-circle" width="100" height="100" />
@@ -59,7 +61,7 @@
             </div>
         </div>
     </div>
-
+    <!--affichage de tous les posts de l'utilisateur-->
     {% for post in posts %}
     <div class="row justify-content-center mt-5">
         <div class="col-md-8 col-sm-12 border-bottom">

@@ -1,7 +1,9 @@
-{% extends 'landing/base.html' %}
+<!--page principale des posts-->
+{% extends 'landing/base.html' %} <!--page enfant de base.html-->
 {% load crispy_forms_tags %}
 
 {% block content %}
+    <!--formulaire pour publier un post-->
     <div class="container">
         <div class="row justify-content-center mt-3">
             <div class="col-md-5 col-sm-12">
@@ -19,6 +21,7 @@
                 </form>
             </div>
         </div>
+        <!--Affichage de tous les commentaires triés par la date d'envoi-->
         {% for post in post_list %}
         <div class="row justify-content-center mt-3">
             <div class="col-md-5 col-sm-12 border-bottom">

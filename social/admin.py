@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Post, UserProfile, Comment
-# Register your models here.
+
+# On enregistre les objets des tables pour que l'admin puisse modifier la base de donnée comme bon lui semble
 
 admin.site.register(Post)
 admin.site.register(Comment)

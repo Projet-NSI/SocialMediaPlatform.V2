@@ -1,13 +1,16 @@
-{% extends 'landing/base.html' %}
+<!--page de détails d'un post, comportant le post en question et les commentaires-->
+{% extends 'landing/base.html' %} <!--page enfant de base.html-->
 {% load crispy_forms_tags %}
 
 {% block content %}
 <div class="container">
+    <!--bouton pour retourner à la page principale des posts-->
     <div class="row mt-5">
         <div class="col-md-3 col-sm-6">
             <a href="{% url 'post-list' %}" class="btn btn-light">Retour à la page principale</a>
         </div>
     </div>
+    <!--Post de l'auteur-->
     <div class="row justify-content-center mt-3">
         <div class="col-md-5 col-sm-12 border-bottom">
             <p>
@@ -37,7 +40,7 @@
             </div>
         </div>
     </div>
-
+    <!--Formulaire pour ajouter un commentaire-->
     <div class="row justify-content-center mt-3">
         <div class="col-md-5 col-sm-12">
             <h5>Ajoutes un commentaire!</h5>
@@ -47,13 +50,14 @@
         <div class="col-md-5 col-sm-12">
             <form method="POST">
                 {% csrf_token %}
-                {{ form | crispy }}
+                {{ form | crispy }} <!--style du formulaire-->
                 <div class="d-grid gap-2">
                     <button class="btn btn-primary mt-3">Envoyer!</button>
                 </div>
             </form>
         </div>
     </div>
+    <!--Affichage de tous les commentaires triés par la date d'envoi-->
     {% for comment in comments %}
     <div class="row justify-content-center mt-3 mb-5">
         <div class="col-md-5 col-sm-12 border-bottom">

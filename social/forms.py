@@ -27,5 +27,6 @@ class CommentForm(forms.ModelForm):
         ))
 
     class Meta:
+        '''Etabli le modèle du formulaire pour sauvegarder les champs dans la base de données'''
         model = Comment
         fields = ['comment']  

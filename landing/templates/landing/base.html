@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %} <!--chargement des fichiers statiques (CSS et images)-->
 
 <!doctype html>
 <html lang="fr">
@@ -7,18 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- favicon -->
     <link rel="icon" type="image/x-icon" class="rounded-circle" href="/media/uploads/logos/Favicon_SM.png">
+    <!-- kit frontend pour les icons -->
     <script src="https://kit.fontawesome.com/ff83017041.js" crossorigin="anonymous"></script>
-    
     <link href="{% static 'style.css' %}" rel="stylesheet">
     <title>LGMedia</title>
   </head>
-  <body>
-    {% include 'landing/navbar.html' %}
+  <body> <!--Template parent-->
+    <!--insére le contenu du template navbar.html-->
+    {% include 'landing/navbar.html' %} 
 
+    <!--section qui peut être remplacée ou étendue dans des templates enfants. 
+      Le contenu de cette section est défini entre les balises {% block content %} et {% endblock content %}.
+      Les templates enfants peuvent utiliser cette section en la redéfinissant avec le même nom {% block content %}{% endblock content %}-->
     {% block content %}
     {% endblock content %}
-
+    
+    <!--script Bootstrap5-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>
 </html>
