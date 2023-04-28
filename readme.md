@@ -14,7 +14,7 @@
 
 ## Présentation
 
-*Social media website* avec Django est une application visant à créer un réseau social simpliste, à l'aide du framework Django[^1], ce projet comportera donc de la programmation objet et une base de données.
+`Social media website` avec Django est une application visant à créer un réseau social simpliste, à l'aide du framework Django[^1], ce projet comportera donc de la programmation objet et une base de données.
 
 [^1]: Django peut être séparé en deux parties clés : les URLs et les vues. Ce sont deux concepts pour gérer les requêtes des utilisateurs. Les URLs sont des adresses web uniques qui identifient une vue dans votre application web. Les vues sont des fonctions Python qui répondent aux requêtes des utilisateurs et renvoient une réponse HTTP, généralement une page web.
 
@@ -30,36 +30,40 @@ Les modèles de données comprennent les utilisateurs, les profils, les messages
 
 ![Schema relationnel](https://i.ibb.co/bBVxFf0/modeles-social.png)
 
-> Remarque : La table *User* est integrée dans Django, elle a pour clé primaire son id qui identifie l'utilisateur de manière unique, qui permet ici aux tables *Post* et *Comment* d'interagir.
+> Remarque : La table `User` est integrée dans Django, elle a pour clé primaire son id qui identifie l'utilisateur de manière unique, qui permet ici aux tables `Post` et `Comment` d'interagir.
 
 ### Fonctionnalités
 
 - [x] Obtention des données de l'utilisateur
-- [x] Deconnexion du compte utilisateur
-- [x] Création de comptes utilisateur (Profil) 
+- [x] Deconnexion du compte utilisateur 
 - [x] Publication de posts
 - [x] Publication de commentaires
-- [x] Modification de posts/commentaires
+- [x] Modification de posts
 - [x] Suppression de posts/commentaires
+- [x] Création de comptes utilisateur (Profil)
 - [x] Commentaires sur les posts
-- [x] Gestion des abonnements
 - [x] Liker des posts (et commentaires)
-- [ ] Recherche utilisateurs à suivre
+- [x] Gestion des abonnements
 
 ## Points importants
 
 - [ ] Sécurité des données utilisateur
 - [x] Mise en place d'une interface utilisateur conviviale
-- [ ] Gestion des erreurs
+- [x] Gestion des erreurs
 
 ## Exemple 
 
-Un utilisateur s'inscrit, crée son profil, publie et commente un post, suit d'autres utilisateurs pour voir leurs profils et communiquer avec eux par message et reçoit une notification lorsque ces utilisateurs publient de nouveaux messages.
+Un utilisateur **s'inscrit**, créé **son profil**, publie et commente un **post**, **like et dislike** des posts et commentaires et **suit d'autres utilisateurs** pour voir leurs profils.
+
+## Pourquoi
+
+Nous étions fascinés de voir comment marchait un réseau social et toutes les étapes à suivre pour en créer un facilement. L'idée de créer un réseau social local pour le lycée était une bonne idée. 
 
 # II - Spécifications techniques
 
 ## Architecture client-server
-L'architecture client-server est composée de trois étapes : 
+
+L'architecture **client-server** est composée de **trois étapes** : 
 
 - détailler le routage des URL pour associer les vues adaptées aux requêtes HTTP que le site devra traiter (y compris avec des informations encodées dans les URL).
 - définir les fonctions de visualisation et créer les pages HTML qui vont permettre de publier les informations à destination des utilisateurs du site.
@@ -81,9 +85,9 @@ Grâce à Django, nos fichiers sont répartis de base dans plusieurs application
 
 Notre début de structure se façonne ainsi 
 
-- landing
-    - templates
-        - landing
+- landing (dossier)
+    - templates (dossier)
+        - landing (dossier)
             - base.html
             - index.html
             - navbar.html
@@ -94,12 +98,16 @@ Notre début de structure se façonne ainsi
     - models.py
     - urls.py
     - views.py
-- social
-    - templates
-        - social
+- social (dossier)
+    - templates (dossier)
+        - social (dossier)
             - comment_delete.html
-            ...
-            (voir github)
+            - post_delete.html
+            - post_detail.html
+            - post_edit.html
+            - post_list.html
+            - profile_edit.html
+            - profile.html
     - admin.py
     - apps copy.py
     - tests.py
@@ -107,256 +115,112 @@ Notre début de structure se façonne ainsi
     - models.py
     - urls.py
     - views.py
-- socialmedia
+- socialmedia (dossier)
+    - asgi.py
     - settings.py
-    ...
-- media
-    - uploads
-        - logos
+    - urls.py
+    - wsgi.py
+- media (dossier)
+    - uploads (dossier)
+        - logos (dossier)
             ...
-        - models
+        - models (dossier)
             ...
-        - profile_pictures
+        - profile_pictures (dossier)
             ...
+        - post_photos (dossier)
+            ...
+- static (dossier)
+    - style.css
 - templates
-    ...
+    ... (django-allauth templates)
 - db.sqlite3
 - manage.py
 - readme.md
 - requirements.txt
+- Procfile
+- runtime.txt
 
-> Remarque : nous récupéré un module *templates* en dessous qui comprends toutes les pages pré construites pour les connexions et inscriptions à l’aide de django-allauth (plusieurs grandes entreprises comme google, instagram, twitter utilisent django-allauth, c’est l’une des bibliothèque les plus efficace.)
-> *socialmedia* est le nom de notre projet Django. Il comprend notamment les settings.py et les urls. 
-> *landing* et *social* sont des applications de notre projet Django
+> Remarque : nous avons récupéré un module `templates` en dessous qui comprends toutes les pages pré construites pour les connexions et inscriptions à l’aide de django-allauth (plusieurs grandes entreprises comme google, instagram, twitter utilisent django-allauth, c’est l’une des bibliothèque les plus efficace.)
+> `socialmedia` est le nom de notre projet Django. Il comprend notamment les settings.py et les urls. 
+> `landing` et `social` sont des applications de notre projet Django
 
 
-## Obtention de données de l'utilisateur
+# III - Modalités de mise en oeuvre 
+
+On utilise le langage **Python** à l’aide de son framework **Django** pour le développement back-end, puis la base de donnée SQLite3.
+
+Pour la partie front-end nous utilisons du **HTML** et du CSS à l’aide du framework **Bootstrap 5**, pour simplifier la tâche.
+
+Ce projet sera hébergé sur la plateforme **Github** sur le référentiel ici : 
+
+https://github.com/Projet-NSI/SocialMediaPlatform.V2
+
+Il y sera précisé à l’aide d’un fichier `README.md` toutes les **étapes clés** de notre projet, les objectifs et les fonctionnalités. Vous pourrez suivre à l’aide de notre référentiel **la configuration du projet et son évolution**.
+
+Vous avez **accès** à l'application ici : 
+
+https://web-production-9a97.up.railway.app/
+
+## Démarrage du projet:
+
+### Créer un projet Django:
+
+Tout d'abord il fallait initialiser le projet django, créer un environnement virtuel (pour faciliter le transfert des modules), installer des modules (tels que Django allauth, Crispy Form etc..) puis créer notre application `landing` ou on mettra nos pages HTML primaires (`base.html`, `index.html` et `navbar.html`) 
+  
+https://docs.djangoproject.com/en/4.2/
+
+## Optemption des données de l'utilisateur :
+
+### Django Allauth
 
 Nous utilisons django-allauth[^3] pour les récupérations des données. 
 
 [^3]: Django-allauth est un package de Django qui fournit des fonctionnalités
 d'authentification pour les utilisateurs. Il inclut des formulaires de création de compte, de
 connexion, de récupération de mot de passe, et des pages HTML pour gérer les
-comptes d'utilisateurs. Cela nous est très utile pour notre réseau social qui nécessite
-des fonctionnalités d'authentification et de gestion des utilisateurs.
+comptes d'utilisateurs. Cela nous est très utile pour notre réseau social qui nécessite des fonctionnalités d'authentification et de gestion des utilisateurs.
 
-## Fonctionnement d'une application Django
 
-Dans une application il y a des modules par défaut qui sont:
+- Nous avons configuré les urls pour bien acheminer les pages
+- Nous avons importé la classe User déjà existante dans Django 
+- Nous avons migré les modèles dans la base de donnés
+- Puis nous avions juste à styliser la page à l'aide de Boostrap5 et de CrispyForm
 
-### Migrations.py:
+## Publication de posts:
+ 
+C'est la fonctionnalité principale de notre application, c'est la page que l'on voit en premier après s'être authentifier
 
-Elle permet d'apporter des modifications à des modèles dans un schéma de base de donnés 
-```
-python3 manage.py
-```
->manage.py django-admin est l'utilitaire en ligne de commande de Django pour les tâches administratives
-```
-python3 manage.py makemigrations
-```
-> responsable de la création de nouvelles migrations en fonction des modifications que vous avez apportées aux modèles.
+### Création de l'application social:
 
-```
-python3 manage.py migrate
-```
-> responsable de l’exécution et de l’annulation des migrations (sauvegardes).
+Pour des raisons d'organisation et de propreté, nous avons décidés de créer une application extérieure nommée `Social` sera mis toutes les autres fonctionnalités du réseau social. 
 
-## Settings.py
+## Création du modèle Post
 
-C'est le fichier qui s'occupe des réglages de l'application
-elle a par exemple une liste avec tout les adresses autorisés
-
-Dans le fichier settings.py, il y a notamment les applications installées, dont ‘landing’ et les pages allauth, crispy_forms[^4]
+`Post` est un modèle Django pour stocker les publications.
 
 ```
-INSTALLED_APPS = [
-    'landing',
-    'social',
-
-    'crispy_forms',
-    'crispy_bootstrap5',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.sites',
-]
+class Post(models.Model):
+    idPost = models.AutoField(primary_key=True)
+    contenu = models.TextField()
+    image = models.ImageField(upload_to='uploads/post_photos', blank=True, null=True)
+    sendingTime = models.DateTimeField(default=timezone.now)
+    auteur = models.ForeignKey(User, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, blank=True, related_name='likes')
+    dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
 ```
 
-[^4]: crispy_forms est une API pour récupérer les données d’un formulaire
-## Modules views.py
+### Page html
 
-Nous utilisons différents modules:
+Dans cette application, nous allons créer un dossier Template puis à l'interieur un dossier social pour gérer les pages HTML. Dans ce dossier, nous allons créer la page 'post_list.html' qui comprendra le formulaire pour poster le message des utilisateurs puis la liste des posts triés par la date d'envoi.
 
-```
-from django.shortcuts import render
-from django.views import View
-from django.urls import reverse_lazy
-from .models import Post, Comment, UserProfile
-from .forms import PostForm, CommentForm
-from django.views.generic.edit import UpdateView, DeleteView
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-```
+Nous complèterons la page après avoir fini la création du formulaire et les fontions dans les vues. 
 
-### Render
+### Création du formulaire
 
-```
-return render(request, 'social/post_detail.html', context)
-```
+Dans Django, nous avons la possibilité de créer des formulaires à l'aide du module forms, permettant de relier les attributs des tables (des modèles) aux formulaires. 
 
-
-Render est un module de django.shortcuts
-
-Les moteurs de rendu personnalisés doivent implémenter une méthode render(template_name, context, request=None). Cette méthode doit renvoyer un modèle rendu (sous la forme d'une chaîne de caractères) ou soulever la question *TemplateDoesNotExist*.
-
-## Views.py
-
-C'est le module permettant de stocker les vues (fonctions) pour notre projet Django.
-
-### View
-
-```
-class PostListView(View):
-```
-
-Le module *View* est une classe parent pour les vues, qui possède différentes méthodes utiles pour celles-ci.
-
-https://docs.djangoproject.com/en/4.1/ref/class-based-views/base/
-
-### UpdateView
-
-UpdateView est un module de django.view.generic.edit
-
-UpdateView est une vue qui affiche un formulaire de **modification d'un objet existant**.
-
-### DeleteView
-
-UpdateView est un module de django.view.generic.edit
-
-DeleteView est une vue qui affiche une **page de confirmation** et supprime un fichier existant.
-
-### UserPassesTestMixin
-
-Module de Django permettant de faire passer des **tests de verifications** aux utilisateurs pour gérer leurs possibilités 
-
-### LoginRequiredMixin
-
-Module de Django vérifiant si l’utilisateur est connecté (ce mixin vérifie que les *AUTHENTICATION_BACKENDS* par défaut rejettent les utilisateurs inactifs.)
-
-### Reverse_lazy()
-
-```
-def get_success_url(self):
-        pk = self.kwargs['pk']
-        return reverse_lazy('post-detail', kwargs={'pk': pk})
-```
-
-Fonction utile pour procéder à une résolution d’URL **avant le chargement** de la configuration des *URLs*.
-
-Dans notre projet, nous l'utilisons pour les mises à jour et supression de posts et commentaires, ou encore dans la création d'un profil 
-
-### Kwargs et Args
-
-```
- def post(self, request, pk, *args, **kwargs):
-        post = Post.objects.get(pk=pk)
-        form = CommentForm(request.POST)
-```
-Les paramètres de la fonction *post* 'args' et 'kwargs' permettent de passer plusieurs arguments ou des arguments de mots-clés à une fonction
-> *args permet de passer plusieurs arguments à une fonction. Si on ajoute print(args), cela va retourner un tuple contenant tous les arguments.
-> **kwargs permet de passer des arguments de mots-clés à une fonction. Si on ajoute print(kwargs), cela va retourner un dictionnaire avec tous les arguments de mot clés
-
-### Redirect
-
-redirect(to, *args, permanent=False, **kwargs)¶
-
-Renvoie une réponse HttpResponseRedirect à l’URL correspondant aux paramètres transmis.
-
-Nous l'utilisons pour les fonctions d'ajouts et de retraits d'abonnements dans nos vues, en indiquant en paramètre l'URL du profil qui sera utilisée comme emplacement de redirection.
-
-```
-def post(self, request, pk, *args, **kwargs):
-        profile = UserProfile.objects.get(pk=pk)
-        profile.followers.add(request.user)
-
-        return redirect('profile', profile.pk)
-```
-
-### HttpResponserRedirect()
-
-HttpResponseRedirect() prend un seul paramètre : l’URL vers laquelle l’utilisateur va être redirigé (redirige vers une nouvelle URL).
-
-Nous l'utilisons dans nos vues pour les likes et dislikes pour rediriger l'utilisateur vers l'URL de la page où il se trouve.
-
-```
-next = request.POST.get('next','/')
-return HttpResponseRedirect(next)
-```
-
-### Crsf_token
-
-Django est livré avec une protection simple d’emploi contre les attaques de type Cross Site Request Forgeries. Lors de l’envoi d’un formulaire par la méthode POST et la protection CSRF active, nous devons obligatoirement utiliser la balise de gabarit csrf_token
-
-```
-<form method="POST">
-    {% csrf_token %}
-    {{ form | crispy }}
-    <div class="d-grid gap-2">
-        <button class="btn btn-primary mt-3">Envoyer!</button>
-    </div>
-</form>
-```
-## Models.py
-
-Les modèles de Django sont une façon de représenter les données dans une base de données relationnelle. Nous les utilisons pour stocker et récupérer des données dans la base de données SQLite3, fournie avec Django.
-
-### User
-
-Les objets utilisateurs sont au cœur du système d'authentification.
-
-Les principaux attributs de l'utilisateur par défaut sont les suivants :
-
-- nom d'utilisateur
-- mot de passe
-- email
-- prenom
-- nom
-
-### Timezone
-
-```
-sendingTime = models.DateTimeField(default=timezone.now)
-```
-
-Django inclut un paramètre *TIME_ZONE* dont la valeur par défaut est l'horaire 'UTC'. Il se trouve dans le fichier de configuration 'settings.py':
-```
-TIME_ZONE = 'UTC'
-```
-
-## Urls.py
-
-C'est le fichier qui permet de stocker les chemins à l'aide du module *path* qui sert à récuperer des chemins et de les transformer en variable:
-
-```
-from django.urls import path
-urlpatterns = [
-    path('', PostListView.as_view(), name='post-list'),
-    path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
-    path('post/edit/<int:pk>/', PostEditView.as_view(), name='post-edit'),
-    path('post/delete/<int:pk>/', PostDeleteView.as_view(), name='post-delete'),
-    path('post/<int:post_pk>/comment/delete/<int:pk>/', CommentDeleteView.as_view(), name='comment-delete'),
-    path('profile/<int:pk>/', ProfileView.as_view(), name='profile'),
-    path('profile/edit/<int:pk>/', ProfileEditView.as_view(), name='profile-edit'),
-]
-```
-
-## Forms.py
+Nous l'utiliserons ensuite dans notre page HTML. 
 
 ```
 class PostForm(forms.ModelForm):
@@ -372,42 +236,217 @@ class PostForm(forms.ModelForm):
         fields = ['contenu']
 ```
 
-Django gère **trois parties** distinctes du travail induit par les formulaires dans forms.py:
+La classe `Meta` defini le modèle et les attributs correspondants pour la base de donnée.
 
-- préparation et restructuration des données en vue de leur présentation
-- création des formulaires HTML pour les données
-- réception et traitement des formulaires et des données envoyés par le client
+### Création de la vue
 
-## Admin.py
+Il faut créer la `PostListView`, qui hérite de la classe générique de Django `View` permettant d'utiliser les méthodes `get` et `post`.
+
+La classe `PostListView` est une vue qui gère l'affichage et l'envoi de messages (`Post`) sur la plateforme sociale.
+
+La méthode `get` est utilisée pour récupérer tous les messages (`Post`) de la base de données et les afficher dans un contexte qui sera rendu dans le template `social/post_list.html`. Elle instancie également un formulaire vide `PostForm` pour permettre aux utilisateurs d'ajouter de nouveaux messages.
+
+La méthode `post` est utilisée lorsque l'utilisateur envoie un formulaire pour ajouter un nouveau message (`Post`). Elle vérifie que le formulaire est valide, instancie un nouvel objet `Post` avec les données valides et l'associe à l'utilisateur connecté avant de l'enregistrer dans la base de données. Elle réaffiche ensuite la liste des messages avec le formulaire actualisé.
 
 ```
-from django.contrib import admin
-from .models import Post, UserProfile
-# Register your models here.
+def post(self, request, `args, ``kwargs):
+        posts = Post.objects.all().order_by('-sendingTime')
+        form = PostForm(request.POST, request.FILES) # réinitialiser le formulaire après l'enregistrement réussi
+        
 
-admin.site.register(Post)
-admin.site.register(UserProfile)
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.auteur = request.user
+            new_post.contenu = form.cleaned_data.get('contenu')
+            new_post.save()
+```
+> Remarque : la fonction `is_valid()` permet de verifier si le formulaire est propre.
+
+Nous devons maintenant créer la page HTML `post_list` puis utiliser la fonction `render()` pour retourner la requête client, la page actuelle et le contexte (les variables utilisées).
+
+```
+return render(request, 'social/post_list.html', context)
 ```
 
-Le fichier admin.py sert à **enregistrer** les modèles dans le projet Django (base de donnée)
+Il nous reste plus qu'à configurer l'URL dans les `urls.py` pour indiquer le chemin à Django (sans oublier d'importer la vue): 
 
-# III - Modalités de mise en oeuvre 
+```
+urlpatterns = [
+    path('', PostListView.as_view(), name='post-list'),
+    ...
+]
+```
 
-On utilise le langage **Python** à l’aide de son framework **Django** pour le développement back-end, puis du SQLite pour la partie base de données du réseau social.
+## Commentaires sur les posts:
 
-Pour la partie front-end nous utilisons du **HTML** et du CSS à l’aide du framework **Bootstrap 5**, pour simplifier la tâche.
+### Modèle
 
-Ce projet sera hébergé sur la plateforme **Github** sur le référentiel ici : 
+Le modèle `Comment` est utilisé pour stocker les commentaires dans l'application. 
 
-https://github.com/Projet-NSI/SocialMediaPlatform.V2
+```
+class Comment(models.Model):
+    comment = models.TextField()
+    contenu = models.DateTimeField(default=timezone.now)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    auteur = models.ForeignKey(User, on_delete=models.CASCADE)
+    sendingTime = models.DateTimeField(default=timezone.now)
+    likes = models.ManyToManyField(User, blank=True, related_name='comment_likes')
+    dislikes = models.ManyToManyField(User, blank=True, related_name='comment_dislikes')
+```
 
-Il y sera précisé à l’aide d’un fichier *README.md* toutes les **étapes clés** de notre projet, les objectifs et les fonctionnalités. Vous pourrez suivre à l’aide de notre référentiel **la configuration du projet et son évolution**.
+### Formulaire
 
-Vous avez **accès** à l'application ici : 
+La classe `CommentForm` est un formulaire pour créer un commentaire, et elle contient un champ pour le texte du commentaire. Elle est liée au modèle `Comment`, de sorte que lorsque le formulaire est soumis, il crée un nouvel objet `Comment` avec le texte du commentaire entré par l'utilisateur.
 
-https://socialmediaplatformv2-3.simonzeru.repl.co/
+### Page HTML
 
-# Bibliographie 
+Nous utilisons la page HTML `post_detail.html` pour afficher les détails d'une publication, y compris ses commentaires. Elle contiendra le formulaire `CommentForm`.
+
+Il reste plus qu'à indiquer l'URL dans les urls.py.
+
+## Mise à jour des posts/commentaires:
+
+### Mise à jour des Posts
+
+Nous héritons des classes de Django : UpdateView, LoginRequiredMixins et UserPassesTestMixin pour créer la vue. 
+
+Dans Django, une vue est une fonction ou une classe qui prend une requête HTTP et renvoie une réponse HTTP. L'utilisation de la vue `UpdateView` permet de mettre à jour un modèle existant dans la base de données à travers un formulaire. Dans cet extrait de code, la vue PostEditView est utilisée pour mettre à jour le contenu de l'objet Post. Elle hérite des fonctionnalités de `LoginRequiredMixin` et `UserPassesTestMixin` pour vérifier que l'utilisateur est connecté et qu'il est bien l'auteur de la publication qu'il souhaite modifier. Les champs à mettre à jour sont spécifiés dans l'attribut `fields`, et la méthode `get_success_url()` redirige l'utilisateur vers la page de détails de la publication mise à jour.
+
+> `UserPassesTextMixins` permet d'utiliser la méthode `test_func` pour verifier qu'uniquement l'utilisateur du post puisse le modifier. 
+
+> la classe `LoginRequiredMixins` permet d'afficher une erreur si l'utilisater n'est pas connecté.
+
+Nous utilisons la page HTML `post_edit`.html pour afficher le formulaire de mise à jour de publication.
+
+## Suppression de posts/commentaires:
+
+Les vues Django `DeleteView` sont utilisées pour supprimer des objets de la base de données. Dans ce cas, la classe PostDeleteView et la classe `CommentDeleteView` sont utilisées respectivement pour supprimer des publications et des commentaires. Le modèle associé à chaque vue est défini par la variable `model`. Les templates correspondants pour confirmer la suppression sont spécifiés par `template_name`. La redirection après la suppression réussie est spécifiée par `success_url` pour `PostDeleteView` et `get_success_url` pour `CommentDeleteView`. La fonction `test_func` permet de s'assurer que seuls les auteurs des publications et des commentaires peuvent les supprimer.
+
+### Suppression de posts
+- Page html `post_delete.html`
+- héritage de `LoginRequiredMixin`, `UserPassesTestMixin`,`DeleteView` (classes génériques Django)
+  
+### Suppression de commmentaires
+- Page html `comment_delete.html`
+- héritage de `LoginRequiredMixin`, `UserPassesTestMixin`,`DeleteView`
+
+## Création de Profil :
+
+### Modèle
+
+`UserProfile` est le modèle pour stocker les profils.
+
+```
+class UserProfile(models.Model):
+	user = models.OneToOneField(User, primary_key=True, verbose_name='user', related_name='profile', on_delete=models.CASCADE)
+	name = models.CharField(max_length=30, blank=True, null=True)
+	bio = models.TextField(max_length=500, blank=True, null=True)
+	birth_date=models.DateField(null=True, blank=True)
+	location = models.CharField(max_length=100, blank=True, null=True)
+	picture = models.ImageField(upload_to='uploads/profile_pictures', default='uploads/profile_pictures/default.png', blank=True)
+	followers = models.ManyToManyField(User, blank=True, related_name='followers')
+```
+> héritage de `UpdateView` comme dans les mises à jour de posts et commentaires
+
+La vue `ProfileView` permet de récupérer et d'afficher les informations liées au profil d'un utilisateur en particulier. Elle utilise l'objet `UserProfile` qui est lié à l'utilisateur grâce à la clé étrangère `user` pour récupérer le profil en question. Ensuite, elle récupère tous les posts écrits par cet utilisateur en les filtrant à l'aide de la méthode `filter` de l'objet `Post`. La vue récupère également la liste des abonnés du profil et calcule le nombre total d'abonnés. Enfin, elle vérifie si l'utilisateur connecté est abonné au profil en question et retourne toutes ces informations dans le contexte pour être utilisées dans le template `profile.html`.
+
+- Création de la page html `profile.html`
+- Création de l'URL
+
+## Liker/Disliker des posts (et commentaires):
+
+Les vues permettent à un utilisateur connecté de "liker" ou "disliker" un post. La vue `Like` est appelée lorsqu'un utilisateur clique sur le bouton "Like" d'un post, et la vue `Dislike` est appelée lorsqu'il clique sur le bouton "Dislike". Dans chaque vue, la méthode `post` est utilisée pour traiter la demande POST envoyée par le formulaire.
+
+Chacune de ces vues récupère le post correspondant en utilisant l'ID du post dans l'URL, puis vérifie si l'utilisateur connecté a déjà aimé ou non ce post. Si l'utilisateur a déjà aimé ou pas aimé, l'association entre l'utilisateur et le post est modifiée en conséquence en ajoutant ou en supprimant l'utilisateur de la liste des utilisateurs qui ont aimé ou n'ont pas aimé le post. La méthode `get_next()` est utilisée pour rediriger l'utilisateur vers la page d'origine.
+
+Pour les likes et dislikes des Commentaires, le principe reste le même, il faut juste récuperer les commentaires et non les posts.
+
+## Gestion des abonnements:
+
+Les vues "AddFollower" et "RemoveFollower" sont des vues qui permettent d'ajouter ou de supprimer un abonnement à un utilisateur. La vue "AddFollower" récupère le profil de l'utilisateur à partir de son identifiant, ajoute l'utilisateur connecté à la liste des abonnés du profil et redirige vers la page de profil. La vue "RemoveFollower" fonctionne de manière similaire, mais elle retire l'utilisateur connecté de la liste des abonnés du profil.
+
+## Syntaxe Django dans les pages HTML
+
+Pour mettre des commandes python, il faut encadrer la ligne de code par `{% ... %}`
+```
+{% for post in post_list %}
+...
+{% endfor %}
+```
+> Remarque : Il faut toujours indiquer la fin des boucles ou conditions, comme en langage naturel
+
+Il faut indiquer le placement du contenu au début et à la fin de chaques pages HTML:
+```
+<body>
+    {% block content %}
+    ...
+    {% endblock content %}
+</body>
+```
+
+### Extension et Inclusion des pages HTML 
+
+#### Extension
+
+Nous pouvons étendre notre fichier primaire nommé `base.html` pour le séparer en plusieurs fichier 
+```
+{% extends 'landing/base.html' %}
+```
+
+#### Inclusion
+
+Pour qu'un fichier reste affiché dans toutes nos pages html,
+il faut l'inclure dans la base:
+```
+{% include 'landing/navbar.html' %}
+```
+> Remarque : Dans notre réseau social, il faut laisser la navbar affichée partout.
+
+Pour le style, nous pouvons directement utiliser les classes *Bootstrap* : 
+```
+<div class="row justify-content-center mt-3">
+```
+
+Les classes css sont importées dans la `base.html` : 
+```
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" ...>
+```
+
+Pour les variables python, il faut encadrer par `{{ ... }}`
+```
+<p>{{ post.contenu }}</p>
+```
+
+Pour les urls, il faut écrire {% url 'nom_de_l'url' cle_primaire %}
+```
+<a href="{% url 'profile' post.auteur.profile.pk %}">
+```
+
+### Static
+
+Pour les images et les fichier css, nous sommes obligé de charger `static` (module) au début de chaques pages HTML utilisant des images:
+```
+{% load static %}
+```
+
+### CrispyForms
+
+Nous devons aussi charger le module de style pour les formulaires
+```
+{% load crispy_forms_tags %}
+```
+
+### Améliorations possibles 
+
+- Notifications
+- Recherche d'utilisitateurs à suivre
+- Page d'accueil présentant uniquement les posts des abonnements de l'utilisateur
+- Threads
+- Algorithme de recommendation d'utilisateurs à suivre
+
+**Nous vous enverrons par l'ent la partie d'explication des modules.**
+
+# IV - Bibliographie 
 
 ### Doc de django allauth :
 
@@ -442,8 +481,18 @@ https://www.programiz.com/python-programming/datetime/strftime
 
 https://fontawesome.com/
 
-### Heroku : 
+### Railway:
 
-https://dashboard.heroku.com/apps/unite-us/deploy/heroku-git
+https://railway.app/
+
+https://alphasec.io/how-to-deploy-a-python-django-app-on-railway/
+
+### Django redirects:
+
+https://realpython.com/django-redirects/
+
+
+
+
 
 

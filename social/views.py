@@ -180,7 +180,7 @@ class Like(LoginRequiredMixin, View):
                 has_liked = True
                 break
         
-        if not has_liked and not has_disliked:
+        if not has_liked:
             post.likes.add(request.user)
         else:
             post.likes.remove(request.user)
@@ -196,7 +196,7 @@ class Dislike(LoginRequiredMixin, View):
         has_liked = False
         for like in likes:
             if like == request.user:
-                has_liked = False
+                has_liked = True
                 break
 
         if has_liked:
@@ -210,7 +210,7 @@ class Dislike(LoginRequiredMixin, View):
                 has_disliked = True
                 break
 
-        if not has_disliked and not has_liked:
+        if not has_disliked:
             post.dislikes.add(request.user)
         else:
             post.dislikes.remove(request.user)
