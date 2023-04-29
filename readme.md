@@ -350,9 +350,7 @@ Nous utilisons la page HTML `post_detail.html` pour afficher les détails d'une 
 
 Il reste plus qu'à indiquer l'URL dans les urls.py.
 
-## Mise à jour des posts/commentaires:
-
-### Mise à jour des Posts
+## Mise à jour des posts:
 
 Nous héritons des classes de Django : UpdateView, LoginRequiredMixins et UserPassesTestMixin pour créer la vue. 
 
