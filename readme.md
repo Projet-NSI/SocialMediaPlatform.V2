@@ -242,9 +242,29 @@ La classe `Meta` defini le modèle et les attributs correspondants pour la base 
 
 Il faut créer la `PostListView`, qui hérite de la classe générique de Django `View` permettant d'utiliser les méthodes `get` et `post`.
 
+```
+class PostListView(View): 
+    ...
+```
+
 La classe `PostListView` est une vue qui gère l'affichage et l'envoi de messages (`Post`) sur la plateforme sociale.
 
 La méthode `get` est utilisée pour récupérer tous les messages (`Post`) de la base de données et les afficher dans un contexte qui sera rendu dans le template `social/post_list.html`. Elle instancie également un formulaire vide `PostForm` pour permettre aux utilisateurs d'ajouter de nouveaux messages.
+
+```
+def get(self, request, *args, **kwargs): #args et kwargs permettent de passer plusieurs arguments ou des arguments de mots-clés à une fonction
+        # récupère tous les objets Post dans la base de données, les trie par date d'envoi et les stocke dans la variable posts
+        posts = Post.objects.all().order_by('-sendingTime') # SELECT * FROM Post ORDER BY sendingTime
+        # initialise un formulaire vide pour créer un nouveau post
+        form = PostForm() 
+        #stocke les variables dans le dico 'contexte'
+        context = {
+            'post_list': posts,
+            'form': form,
+        }
+        # retourne la requête client, la page modifiée et le contexte
+        return render(request, 'social/post_list.html', context)
+```
 
 La méthode `post` est utilisée lorsque l'utilisateur envoie un formulaire pour ajouter un nouveau message (`Post`). Elle vérifie que le formulaire est valide, instancie un nouvel objet `Post` avec les données valides et l'associe à l'utilisateur connecté avant de l'enregistrer dans la base de données. Elle réaffiche ensuite la liste des messages avec le formulaire actualisé.
 
@@ -298,6 +318,22 @@ class Comment(models.Model):
 
 La classe `CommentForm` est un formulaire pour créer un commentaire, et elle contient un champ pour le texte du commentaire. Elle est liée au modèle `Comment`, de sorte que lorsque le formulaire est soumis, il crée un nouvel objet `Comment` avec le texte du commentaire entré par l'utilisateur.
 
+```
+class CommentForm(forms.ModelForm):
+    '''Champs des commentaires'''
+    comment = forms.CharField(
+        label='',
+        widget=forms.Textarea(
+            attrs={'rows': '3',
+                   'placeholder': 'Dites quelque chose...'}
+        ))
+
+    class Meta:
+        '''Etabli le modèle du formulaire pour sauvegarder les champs dans la base de données'''
+        model = Comment
+        fields = ['comment']  
+```
+
 ### Page HTML
 
 Nous utilisons la page HTML `post_detail.html` pour afficher les détails d'une publication, y compris ses commentaires. Elle contiendra le formulaire `CommentForm`.
@@ -312,6 +348,27 @@ Nous héritons des classes de Django : UpdateView, LoginRequiredMixins et UserPa
 
 Dans Django, une vue est une fonction ou une classe qui prend une requête HTTP et renvoie une réponse HTTP. L'utilisation de la vue `UpdateView` permet de mettre à jour un modèle existant dans la base de données à travers un formulaire. Dans cet extrait de code, la vue PostEditView est utilisée pour mettre à jour le contenu de l'objet Post. Elle hérite des fonctionnalités de `LoginRequiredMixin` et `UserPassesTestMixin` pour vérifier que l'utilisateur est connecté et qu'il est bien l'auteur de la publication qu'il souhaite modifier. Les champs à mettre à jour sont spécifiés dans l'attribut `fields`, et la méthode `get_success_url()` redirige l'utilisateur vers la page de détails de la publication mise à jour.
 
+```
+class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post # On défini le modèle de l'objet modifié
+    fields = ['contenu'] # On défini l'attribut du modèle de l'objet modifié
+    template_name = 'social/post_edit.html' # sert à spécifier le nom de la page modèle à utiliser pour afficher la page d'édition des publications (Post). 
+    
+    # méthode de la classe UpdateView appelée lorsque la mise à jour d'un objet est réussie. Dans ce cas, elle redirige l'utilisateur vers la vue de détail de l'objet mis à jour, ici post_detail.
+    def get_success_url(self):
+         # Clé primaire du post mis à jour
+        pk = self.kwargs['pk']
+
+        # génére (ou retourne) l'URL de redirection en utilisant le nom relatif de l'URL
+        return reverse_lazy('post-detail', kwargs={'pk': pk})
+        # L'identifiant du post doit être inclus dans l'URL de redirection, car la vue de détail du post est la page à laquelle l'utilisateur sera redirigé après avoir mis à jour son post.
+        # Cela garantit que l'utilisateur sera redirigé vers la bonne page après la mise à jour du post.
+
+    def test_func(self): # Vérifie si l'utilisateur est autorisé à effectuer l'action à l'aide de la méthode test_func
+        post = self.get_object() # récupère le post
+        return self.request.user == post.auteur # vérifie si l'auteur est bien l'utilisateur
+```
+
 > `UserPassesTextMixins` permet d'utiliser la méthode `test_func` pour verifier qu'uniquement l'utilisateur du post puisse le modifier. 
 
 > la classe `LoginRequiredMixins` permet d'afficher une erreur si l'utilisater n'est pas connecté.
@@ -323,10 +380,42 @@ Nous utilisons la page HTML `post_edit`.html pour afficher le formulaire de mise
 Les vues Django `DeleteView` sont utilisées pour supprimer des objets de la base de données. Dans ce cas, la classe PostDeleteView et la classe `CommentDeleteView` sont utilisées respectivement pour supprimer des publications et des commentaires. Le modèle associé à chaque vue est défini par la variable `model`. Les templates correspondants pour confirmer la suppression sont spécifiés par `template_name`. La redirection après la suppression réussie est spécifiée par `success_url` pour `PostDeleteView` et `get_success_url` pour `CommentDeleteView`. La fonction `test_func` permet de s'assurer que seuls les auteurs des publications et des commentaires peuvent les supprimer.
 
 ### Suppression de posts
+
+```
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    # On défini le modèle de l'objet modifié
+    model = Post
+    # template_name sert à spécifier le nom de la page modèle à utiliser pour afficher la page d'édition des publications (Post). 
+    template_name = 'social/post_delete.html'
+    # après la suppression d'un Post, l'utilisateur sera redirigé vers la liste des Posts.
+    success_url = reverse_lazy('post-list')
+    # reverse_lazy() est utilisée pour obtenir l'URL à partir du nom relatif de l'URL.
+
+    def test_func(self): #test de vérification
+        post = self.get_object()
+        return self.request.user == post.auteur
+```
+
 - Page html `post_delete.html`
 - héritage de `LoginRequiredMixin`, `UserPassesTestMixin`,`DeleteView` (classes génériques Django)
   
 ### Suppression de commmentaires
+
+```
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'social/comment_delete.html'
+
+    def get_success_url(self):
+        pk = self.kwargs['post_pk'] # récupére l'identifiant du post à partir duquel l'utilisateur a supprimé un commentaire.
+        
+        # nous créons une URL en utilisant la fonction reverse_lazy. Cette URL est générée à partir du nom relatif de l'URL (post-detail)
+        return reverse_lazy('post-detail', kwargs={'pk': pk}) 
+        # L'identifiant du post doit être inclus dans l'URL de redirection, car la vue de détail du post est la page à laquelle l'utilisateur sera redirigé après avoir supprimé le commentaire.
+        
+        # Cela garantit que l'utilisateur sera redirigé vers la bonne page après la suppression du commentaire.
+```
+
 - Page html `comment_delete.html`
 - héritage de `LoginRequiredMixin`, `UserPassesTestMixin`,`DeleteView`
 
@@ -350,12 +439,80 @@ class UserProfile(models.Model):
 
 La vue `ProfileView` permet de récupérer et d'afficher les informations liées au profil d'un utilisateur en particulier. Elle utilise l'objet `UserProfile` qui est lié à l'utilisateur grâce à la clé étrangère `user` pour récupérer le profil en question. Ensuite, elle récupère tous les posts écrits par cet utilisateur en les filtrant à l'aide de la méthode `filter` de l'objet `Post`. La vue récupère également la liste des abonnés du profil et calcule le nombre total d'abonnés. Enfin, elle vérifie si l'utilisateur connecté est abonné au profil en question et retourne toutes ces informations dans le contexte pour être utilisées dans le template `profile.html`.
 
+```
+class ProfileView(View):
+    def get(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk) # SELECT * FROM UserProfile WHERE user = pk
+        user = profile.user # on récupère l''utilisateur du profil
+        posts = Post.objects.filter(auteur=user).order_by('-sendingTime') # SELECT * FROM Post WHERE auteur = user ORDER BY sendingTime
+        abonnes = profile.followers.all() # liste de tout les abonnés de du profil
+        total_abonnes = len(abonnes) # nombre total d'abonnés, soit la longueur de la liste
+
+        est_abonne = False 
+        # On parcours la liste des abonnés pour savoir si l'utilisateur est abonné au profil
+        for abonne in abonnes:
+            if abonne == request.user:
+                est_abonne =  True
+                break
+
+        context = {
+            'user': user,
+            'profile': profile,
+            'posts': posts,
+            'total_abonnes': total_abonnes,
+            'est_abonne': est_abonne,
+        }
+
+        return render(request, 'social/profile.html', context)
+```
+
 - Création de la page html `profile.html`
 - Création de l'URL
 
 ## Liker/Disliker des posts (et commentaires):
 
 Les vues permettent à un utilisateur connecté de "liker" ou "disliker" un post. La vue `Like` est appelée lorsqu'un utilisateur clique sur le bouton "Like" d'un post, et la vue `Dislike` est appelée lorsqu'il clique sur le bouton "Dislike". Dans chaque vue, la méthode `post` est utilisée pour traiter la demande POST envoyée par le formulaire.
+
+```
+class Like(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        post = Post.objects.get(pk=pk) # SELECT * FROM Post WHERE idPost = pk
+
+        dislikes = post.dislikes.all() # liste de tous id des utilisateurs qui ont dislike
+        has_disliked = False
+        # On vérifie si l'utilisateur actuel a disliker
+        for dislike in dislikes:
+            if dislike == request.user:
+                has_disliked = True
+                break
+        # Si oui on le supprime de la liste car sinon il pourrait liker et disliker en même temps
+        if has_disliked:
+            post.dislikes.remove(request.user)
+
+        # Même principe pour les likes
+        likes = post.likes.all()
+        has_liked = False
+
+        for like in likes:
+            if like == request.user:
+                has_liked = True
+                break
+        # Si il n'a pas liker, on l'ajoute dans la liste sinon on le supprime de celle-ci
+        if not has_liked:
+            post.likes.add(request.user)
+        else:
+            post.likes.remove(request.user)
+
+        # permet de récupérer l'URL de redirection (next) après que l'utilisateur ait effectué l'action de "like"
+        next = request.POST.get('next','/')
+        return HttpResponseRedirect(next) # redirige l'utilisateur vers une autre page, si next est vide, on redirige l'utilisateur vers la page précédente (modifiée)
+
+        # Plus précisément, cette ligne de code récupère la valeur associée à la clé "next" dans le dictionnaire de requête POST. 
+        
+        # Si la clé "next" n'est pas présente dans le dictionnaire de requête POST, la valeur par défaut "/" est retournée, qui est l'URL de la page d'accueil.
+
+        # Par conséquent, si l'utilisateur est déjà sur une page spécifique (par exemple, la page de détails d'un post) et qu'il aime ce post, il sera redirigé vers la même page après avoir effectué l'action de "like".
+```
 
 Chacune de ces vues récupère le post correspondant en utilisant l'ID du post dans l'URL, puis vérifie si l'utilisateur connecté a déjà aimé ou non ce post. Si l'utilisateur a déjà aimé ou pas aimé, l'association entre l'utilisateur et le post est modifiée en conséquence en ajoutant ou en supprimant l'utilisateur de la liste des utilisateurs qui ont aimé ou n'ont pas aimé le post. La méthode `get_next()` est utilisée pour rediriger l'utilisateur vers la page d'origine.
 
@@ -364,6 +521,20 @@ Pour les likes et dislikes des Commentaires, le principe reste le même, il faut
 ## Gestion des abonnements:
 
 Les vues "AddFollower" et "RemoveFollower" sont des vues qui permettent d'ajouter ou de supprimer un abonnement à un utilisateur. La vue "AddFollower" récupère le profil de l'utilisateur à partir de son identifiant, ajoute l'utilisateur connecté à la liste des abonnés du profil et redirige vers la page de profil. La vue "RemoveFollower" fonctionne de manière similaire, mais elle retire l'utilisateur connecté de la liste des abonnés du profil.
+
+```
+class AddFollower(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk) # SELECT * FROM UserProfile WHERE user = pk
+
+        # La méthode add() est une méthode de l'objet ManyToManyField utilisée pour ajouter un objet à une relation Many-to-Many. 
+        profile.followers.add(request.user) #ajout de l'utilisateur qui a fait la requête dans les abonnés du profil
+        
+        # Dans ce cas, profile.followers représente la relation ManyToManyField définie dans le modèle Profile, qui relie un profil à plusieurs utilisateurs qui le suivent.
+        
+        return redirect('profile', profile.pk)
+        # redirige l'utilisateur vers la page du profil de l'utilisateur qu'il vient de suivre.
+```
 
 ## Syntaxe Django dans les pages HTML
 
@@ -388,7 +559,7 @@ Il faut indiquer le placement du contenu au début et à la fin de chaques pages
 
 #### Extension
 
-Nous pouvons étendre notre fichier primaire nommé `base.html` pour le séparer en plusieurs fichier 
+Nous pouvons étendre notre fichier parent nommé `base.html` pour le séparer en plusieurs fichier 
 ```
 {% extends 'landing/base.html' %}
 ```
