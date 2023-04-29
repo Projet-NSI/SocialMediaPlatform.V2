@@ -176,7 +176,7 @@ https://web-production-9a97.up.railway.app/
 
 ### Créer un projet Django:
 
-Tout d'abord il fallait initialiser le projet django, créer un environnement virtuel (pour faciliter le transfert des modules), installer des modules (tels que Django allauth, Crispy Form etc..) puis créer notre application `landing` ou on mettra nos pages HTML primaires (`base.html`, `index.html` et `navbar.html`) 
+Tout d'abord il fallait initialiser le projet django, créer un environnement virtuel (pour faciliter le transfert des modules), installer des modules (tels que *django allauth*, *Crispy Form* etc..) puis créer notre application `landing` ou on mettra nos pages HTML primaires (`base.html`, `index.html` et `navbar.html`) 
 
 https://docs.djangoproject.com/en/4.2/
 
@@ -220,9 +220,9 @@ class Post(models.Model):
     dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
 ```
 
-### Page html
+### Pages HTML
 
-Dans cette application, nous allons créer un dossier Template puis à l'interieur un dossier social pour gérer les pages HTML. Dans ce dossier, nous allons créer la page 'post_list.html' qui comprendra le formulaire pour poster le message des utilisateurs puis la liste des posts triés par la date d'envoi.
+Dans cette application, nous allons créer un dossier `Template` puis à l'interieur un dossier `social` pour gérer les pages HTML. Dans ce dossier, nous allons créer la page `post_list.html` qui comprendra le formulaire pour poster le message des utilisateurs puis la liste des posts triés par la date d'envoi.
 
 Nous complèterons la page après avoir fini la création du formulaire et les fontions dans les vues. 
 
@@ -306,6 +306,7 @@ urlpatterns = [
     ...
 ]
 ```
+> Remarque : le chemin n'a pas besoin d'être complété car ce sera la page d'accueil lorsque l'utilisateur se connecte.
 
 ## Commentaires sur les posts:
 
@@ -344,11 +345,16 @@ class CommentForm(forms.ModelForm):
         fields = ['comment']  
 ```
 
-### Page HTML
+Nous utilisons la page `post_detail.html` pour afficher les détails d'une publication, y compris ses commentaires. Elle contiendra le formulaire `CommentForm`.
 
-Nous utilisons la page HTML `post_detail.html` pour afficher les détails d'une publication, y compris ses commentaires. Elle contiendra le formulaire `CommentForm`.
+Il reste plus qu'à indiquer l'URL dans les urls.py :
 
-Il reste plus qu'à indiquer l'URL dans les urls.py.
+```
+urlpatterns = [
+    ...
+    path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
+]
+```
 
 ## Mise à jour des posts:
 
@@ -381,14 +387,25 @@ class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 > la classe `LoginRequiredMixins` permet d'afficher une erreur si l'utilisater n'est pas connecté.
 
-Nous utilisons la page HTML `post_edit`.html pour afficher le formulaire de mise à jour de publication.
+Nous utilisons la page HTML `post_edit.html` pour afficher le formulaire de mise à jour de publication.
+
+Il nous reste plus qu'à configurer l'url :
+
+```
+urlpatterns = [
+    ...
+    path('post/edit/<int:pk>/', PostEditView.as_view(), name='post-edit'),
+    ...
+]
+```
 
 ## Suppression de posts/commentaires:
 
-Les vues Django `DeleteView` sont utilisées pour supprimer des objets de la base de données. Dans ce cas, la classe PostDeleteView et la classe `CommentDeleteView` sont utilisées respectivement pour supprimer des publications et des commentaires. Le modèle associé à chaque vue est défini par la variable `model`. Les templates correspondants pour confirmer la suppression sont spécifiés par `template_name`. La redirection après la suppression réussie est spécifiée par `success_url` pour `PostDeleteView` et `get_success_url` pour `CommentDeleteView`. La fonction `test_func` permet de s'assurer que seuls les auteurs des publications et des commentaires peuvent les supprimer.
+Les vues Django `DeleteView` sont utilisées pour supprimer des objets de la base de données. Dans ce cas, la classe `PostDeleteView` et la classe `CommentDeleteView` sont utilisées respectivement pour supprimer des publications et des commentaires. Le modèle associé à chaque vue est défini par la variable `model`. Les templates correspondants pour confirmer la suppression sont spécifiés par `template_name`. La redirection après la suppression réussie est spécifiée par `success_url` pour `PostDeleteView` et `get_success_url` pour `CommentDeleteView`. La fonction `test_func` permet de s'assurer que seuls les auteurs des publications et des commentaires peuvent les supprimer.
 
 ### Suppression de posts
 
+La vue `PostDeleteView` est une vue basée sur une classe dans Django qui permet de supprimer un objet de type Post de la base de données. Cette vue nécessite que l'utilisateur soit authentifié et qu'il ait la permission de supprimer le `post` en question.
 ```
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     # On défini le modèle de l'objet modifié
@@ -404,10 +421,27 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return self.request.user == post.auteur
 ```
 
-- Page html `post_delete.html`
-- héritage de `LoginRequiredMixin`, `UserPassesTestMixin`,`DeleteView` (classes génériques Django)
-  
+Elle utilise le modèle `Post` pour récupérer l'objet à supprimer à partir de son identifiant (`pk`), et affiche un formulaire de confirmation avant de supprimer définitivement le post de la base de données.
+
+La vue redirige ensuite l'utilisateur vers la page d'accueil du site (`success_url = reverse_lazy('post-list')`). Si l'utilisateur annule la suppression, il est redirigé vers la page de détails du post (`get_success_url`).
+
+Nous utilisons la page `post_delete.html` pour afficher la demande de suppresion du post.
+
+Il nous reste plus qu'à configurer l'url :
+
+```
+urlpatterns = [
+    ...
+    path('post/delete/<int:pk>/', PostDeleteView.as_view(), name='post-delete'),
+    ...
+]
+```
+
 ### Suppression de commmentaires
+
+La vue `CommentDeleteView` est une vue de suppression qui permet de supprimer un commentaire existant sur un `post`. Elle hérite de la classe générique Django `DeleteView`. Cette vue nécessite une connexion utilisateur pour être accessible grâce à l'utilisation de `LoginRequiredMixin`.
+
+Dans la méthode `get_success_url()`, nous récupérons l'identifiant du `post` lié au commentaire supprimé grâce à `self.kwargs['post_pk']`. Puis, nous créons une URL pour afficher les détails de ce `post à l'aide de la fonction `reverse_lazy()` et nous passons l'identifiant du post en tant que paramètre.
 
 ```
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -424,14 +458,27 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         # Cela garantit que l'utilisateur sera redirigé vers la bonne page après la suppression du commentaire.
 ```
 
-- Page html `comment_delete.html`
-- héritage de `LoginRequiredMixin`, `UserPassesTestMixin`,`DeleteView`
+Lorsque l'utilisateur clique sur le bouton de suppression, la méthode `delete()` est appelée pour supprimer l'objet commentaire de la base de données. Enfin, l'utilisateur est redirigé vers la page des détails du post en question grâce à l'utilisation de la fonction `HttpResponseRedirect()`.
+
+Nous utilisons la page `comment_delete.html` pour afficher la demande de suppression du commentaire.
+
+Il nous reste plus qu'à configurer l'url :
+
+```
+urlpatterns = [
+    ...
+    path('post/<int:post_pk>/comment/delete/<int:pk>/', CommentDeleteView.as_view(), name='comment-delete'),
+    ...
+]
+```
 
 ## Création de Profil :
 
 ### Modèle
 
 `UserProfile` est le modèle pour stocker les profils.
+
+La vue `ProfileView` permet de récupérer et d'afficher les informations liées au profil d'un utilisateur en particulier.
 
 ```
 class UserProfile(models.Model):
@@ -445,7 +492,7 @@ class UserProfile(models.Model):
 ```
 > héritage de `UpdateView` comme dans les mises à jour de posts et commentaires
 
-La vue `ProfileView` permet de récupérer et d'afficher les informations liées au profil d'un utilisateur en particulier. Elle utilise l'objet `UserProfile` qui est lié à l'utilisateur grâce à la clé étrangère `user` pour récupérer le profil en question. Ensuite, elle récupère tous les posts écrits par cet utilisateur en les filtrant à l'aide de la méthode `filter` de l'objet `Post`. La vue récupère également la liste des abonnés du profil et calcule le nombre total d'abonnés. Enfin, elle vérifie si l'utilisateur connecté est abonné au profil en question et retourne toutes ces informations dans le contexte pour être utilisées dans le template `profile.html`.
+Elle utilise l'objet `UserProfile` qui est lié à l'utilisateur grâce à la clé étrangère `user` pour récupérer le profil en question. Ensuite, elle récupère tous les posts écrits par cet utilisateur en les filtrant à l'aide de la méthode `filter` de l'objet `Post`. La vue récupère également la liste des abonnés du profil et calcule le nombre total d'abonnés. Enfin, elle vérifie si l'utilisateur connecté est abonné au profil en question et retourne toutes ces informations dans le contexte pour être utilisées dans le template `profile.html`.
 
 ```
 class ProfileView(View):
@@ -474,10 +521,19 @@ class ProfileView(View):
         return render(request, 'social/profile.html', context)
 ```
 
-- Création de la page html `profile.html`
-- Création de l'URL
+Nous devons créer la page `profile.html` pour afficher le profil de l'utilisateur.
 
-## Liker/Disliker des posts (et commentaires):
+Il nous reste plus qu'à configurer l'url :
+
+```
+urlpatterns = [
+    ...
+    path('profile/<int:pk>/', ProfileView.as_view(), name='profile'),
+    ...
+]
+```
+
+## Liker/Disliker des posts et commentaires:
 
 Les vues permettent à un utilisateur connecté de "liker" ou "disliker" un post. La vue `Like` est appelée lorsqu'un utilisateur clique sur le bouton "Like" d'un post, et la vue `Dislike` est appelée lorsqu'il clique sur le bouton "Dislike". Dans chaque vue, la méthode `post` est utilisée pour traiter la demande POST envoyée par le formulaire.
 
@@ -526,9 +582,24 @@ Chacune de ces vues récupère le post correspondant en utilisant l'ID du post d
 
 Pour les likes et dislikes des Commentaires, le principe reste le même, il faut juste récuperer les commentaires et non les posts.
 
+Il nous reste plus qu'à configurer les urls :
+
+```
+urlpatterns = [
+    ...
+    path('post/<int:post_pk>/comment/<int:pk>/like', CommentLike.as_view(), name='comment-like'),
+    path('post/<int:post_pk>/comment/<int:pk>/dislike', CommentDislike.as_view(), name='comment-dislike'),
+    path('post/<int:pk>/like', Like.as_view(), name='like'),
+    path('post/<int:pk>/dislike', Dislike.as_view(), name='dislike'),
+    ...
+]
+```
+
 ## Gestion des abonnements:
 
-Les vues "AddFollower" et "RemoveFollower" sont des vues qui permettent d'ajouter ou de supprimer un abonnement à un utilisateur. La vue "AddFollower" récupère le profil de l'utilisateur à partir de son identifiant, ajoute l'utilisateur connecté à la liste des abonnés du profil et redirige vers la page de profil. La vue "RemoveFollower" fonctionne de manière similaire, mais elle retire l'utilisateur connecté de la liste des abonnés du profil.
+Les vues "AddFollower" et "RemoveFollower" sont des vues qui permettent d'ajouter ou de supprimer un abonnement à un utilisateur.
+
+La vue "AddFollower" récupère le profil de l'utilisateur à partir de son identifiant, ajoute l'utilisateur connecté à la liste des abonnés du profil et redirige vers la page de profil. 
 
 ```
 class AddFollower(LoginRequiredMixin, View):
@@ -542,6 +613,27 @@ class AddFollower(LoginRequiredMixin, View):
         
         return redirect('profile', profile.pk)
         # redirige l'utilisateur vers la page du profil de l'utilisateur qu'il vient de suivre.
+```
+
+La vue "RemoveFollower" fonctionne de manière similaire, mais elle retire l'utilisateur connecté de la liste des abonnés du profil.
+
+```
+class RemoveFollower(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk) # SELECT * FROM UserProfile WHERE user = pk
+        profile.followers.remove(request.user) #Fonction de Django déjà faite pour retirer des abonnements
+
+        return redirect('profile', pk=profile.pk)
+```
+
+Il nous reste plus qu'à configurer les urls :
+
+```
+urlpatterns = [
+    ...
+    path('profile/<int:pk>/followers/add', AddFollower.as_view(), name='add-follower'),
+    path('profile/<int:pk>/followers/remove', RemoveFollower.as_view(), name='remove-follower')
+]
 ```
 
 ## Syntaxe Django dans les pages HTML
