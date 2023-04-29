@@ -148,9 +148,17 @@ Notre début de structure se façonne ainsi
 
 # III - Modalités de mise en oeuvre 
 
-On utilise le langage **Python** à l’aide de son framework **Django** pour le développement back-end, puis la base de donnée SQLite3.
+On utilise le langage **Python** à l’aide de son framework **Django** pour le développement back-end
+
+![Djangoproject](https://i0.wp.com/www.skysilk.com/blog/wp-content/uploads/2018/01/python-django-logo.jpg?fit=1280%2C720&ssl=1)
+
+Puis, la base de donnée SQLite3
+
+![SQLite3](https://andreyex.ru/wp-content/uploads/2021/10/Kak-ustanovit-SQLite-na-Debian-11.png)
 
 Pour la partie front-end nous utilisons du **HTML** et du CSS à l’aide du framework **Bootstrap 5**, pour simplifier la tâche.
+
+![Bootstrap5](https://www.transycons.com/wp-content/uploads/2014/08/bootstrap-1.jpg)
 
 Ce projet sera hébergé sur la plateforme **Github** sur le référentiel ici : 
 
@@ -167,7 +175,7 @@ https://web-production-9a97.up.railway.app/
 ### Créer un projet Django:
 
 Tout d'abord il fallait initialiser le projet django, créer un environnement virtuel (pour faciliter le transfert des modules), installer des modules (tels que Django allauth, Crispy Form etc..) puis créer notre application `landing` ou on mettra nos pages HTML primaires (`base.html`, `index.html` et `navbar.html`) 
-  
+
 https://docs.djangoproject.com/en/4.2/
 
 ## Optemption des données de l'utilisateur :
