@@ -13,13 +13,19 @@
     <!--Post de l'auteur-->
     <div class="row justify-content-center mt-3">
         <div class="col-md-5 col-sm-12 border-bottom">
-            <p>
-                <a href="" class="text-primary post-link">@{{ post.auteur }}</a> {{ post.sendingTime }}
-                {% if request.user == post.auteur %}
-                <a href="{% url 'post-edit' post.pk %}" style="color: #333;"><i class="far fa-edit"></i></a>
-                <a href="{% url 'post-delete' post.pk %}" style="color: #333;"><i class="fas fa-trash"></i></a>
-                {% endif %}
-            </p>
+            <div class="d-flex align-items-center">
+                <a href="{% url 'profile' post.auteur.profile.pk %}">
+                    <img class="round-circle post-pdp" height="30" width="30" src="{{ post.auteur.profile.picture.url }}" />
+                </a>
+                <p class="post-text">
+                    <a class="text-primary post-link" href="{% url 'profile' post.auteur.profile.pk %}">@{{ post.auteur }}</a> 
+                    {{ post.sendingTime }}
+                    {% if request.user == post.auteur %}
+                    <a href="{% url 'post-edit' post.pk %}" style="color: #333;"><i class="far fa-edit"></i></a>
+                    <a href="{% url 'post-delete' post.pk %}" style="color: #333;"><i class="fas fa-trash"></i></a>
+                    {% endif %}
+                </p>
+            </div>
             <p>{{ post.contenu }}</p>
             <div class="d-flex flex-row">
                 <form method="POST" action="{% url 'like' post.pk %}">
