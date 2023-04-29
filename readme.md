@@ -37,12 +37,12 @@ Les modèles de données comprennent les utilisateurs, les profils, les messages
 - [x] Obtention des données de l'utilisateur
 - [x] Deconnexion du compte utilisateur 
 - [x] Publication de posts
-- [x] Publication de commentaires
 - [x] Modification de posts
-- [x] Suppression de posts/commentaires
+- [x] Suppression de posts
 - [x] Création de comptes utilisateur (Profil)
 - [x] Commentaires sur les posts
-- [x] Liker des posts (et commentaires)
+- [x] Suppression de commentaires
+- [x] Liker des posts et commentaires
 - [x] Gestion des abonnements
 
 ## Points importants
