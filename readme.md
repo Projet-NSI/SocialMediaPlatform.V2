@@ -14,7 +14,9 @@
 
 ## Présentation
 
-`Social media website` avec Django est une application visant à créer un réseau social simpliste, à l'aide du framework Django[^1], ce projet comportera donc de la programmation objet et une base de données.
+`LGMedia` avec Django est une application visant à créer un réseau social simpliste destiné aux lycéens du LGM, à l'aide du framework Django[^1], ce projet comportera donc de la programmation objet et une base de données.
+
+![Logo](/media/uploads/logos/Favicon_SM.png)
 
 [^1]: Django peut être séparé en deux parties clés : les URLs et les vues. Ce sont deux concepts pour gérer les requêtes des utilisateurs. Les URLs sont des adresses web uniques qui identifient une vue dans votre application web. Les vues sont des fonctions Python qui répondent aux requêtes des utilisateurs et renvoient une réponse HTTP, généralement une page web.
 
@@ -154,7 +156,7 @@ On utilise le langage **Python** à l’aide de son framework **Django** pour le
 
 Puis, la base de donnée SQLite3
 
-![SQLite3](https://andreyex.ru/wp-content/uploads/2021/10/Kak-ustanovit-SQLite-na-Debian-11.png)
+![SQLite3](https://sqlite.org/forum/logo?id=4ef9785e)
 
 Pour la partie front-end nous utilisons du **HTML** et du CSS à l’aide du framework **Bootstrap 5**, pour simplifier la tâche.
 
