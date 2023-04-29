@@ -719,6 +719,10 @@ Nous devons aussi charger le module de style pour les formulaires
 
 # IV - Bibliographie 
 
+### Doc Django Project Mozilla : 
+
+https://developer.mozilla.org/fr/docs/Learn/Server-side/Django
+
 ### Doc de django allauth :
 
 https://django-allauth.readthedocs.io/en/latest/installation.html
