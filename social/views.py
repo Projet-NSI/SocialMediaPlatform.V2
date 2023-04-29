@@ -91,7 +91,7 @@ class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
          # Clé primaire du post mis à jour
         pk = self.kwargs['pk']
 
-        # génére (ou retourne) l'URL de redirection en utilisant le nom de la vue post-detail
+        # génére (ou retourne) l'URL de redirection en utilisant le nom relatif de l'URL
         return reverse_lazy('post-detail', kwargs={'pk': pk})
         # L'identifiant du post doit être inclus dans l'URL de redirection, car la vue de détail du post est la page à laquelle l'utilisateur sera redirigé après avoir mis à jour son post.
         # Cela garantit que l'utilisateur sera redirigé vers la bonne page après la mise à jour du post.
@@ -102,11 +102,13 @@ class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 # Vue pour supprimer un post qui hérite des classes Django DeleteView, LoginRequiredMixin et UserPassesTestMixin
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Post 
+    # On défini le modèle de l'objet modifié
+    model = Post
+    # template_name sert à spécifier le nom de la page modèle à utiliser pour afficher la page d'édition des publications (Post). 
     template_name = 'social/post_delete.html'
     # après la suppression d'un Post, l'utilisateur sera redirigé vers la liste des Posts.
     success_url = reverse_lazy('post-list')
-    # reverse_lazy() est utilisée pour obtenir l'URL à partir du nom de l'URL.
+    # reverse_lazy() est utilisée pour obtenir l'URL à partir du nom relatif de l'URL.
 
     def test_func(self): #test de vérification
         post = self.get_object()
@@ -118,8 +120,8 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         pk = self.kwargs['post_pk'] # récupére l'identifiant du post à partir duquel l'utilisateur a supprimé un commentaire.
-        # nous créons une URL en utilisant la fonction reverse_lazy. Cette URL est générée à partir du nom de l'URL (post-detail)
         
+        # nous créons une URL en utilisant la fonction reverse_lazy. Cette URL est générée à partir du nom relatif de l'URL (post-detail)
         return reverse_lazy('post-detail', kwargs={'pk': pk}) 
         # L'identifiant du post doit être inclus dans l'URL de redirection, car la vue de détail du post est la page à laquelle l'utilisateur sera redirigé après avoir supprimé le commentaire.
         
@@ -233,6 +235,7 @@ class Like(LoginRequiredMixin, View):
 
 # Vue pour ajouter un dislike sur un post
 class Dislike(LoginRequiredMixin, View):
+    # même principe que la vue Like
     def post(self, request, pk, *args, **kwargs):
         post = Post.objects.get(pk=pk)
 
@@ -264,6 +267,7 @@ class Dislike(LoginRequiredMixin, View):
 
 # Vue pour ajouter un J'aime sur un commentaire
 class CommentLike(LoginRequiredMixin, View):
+    # même principe que la vue Like
     def post(self, request, pk, *args, **kwargs):
         comment = Comment.objects.get(pk=pk)
 
@@ -296,6 +300,7 @@ class CommentLike(LoginRequiredMixin, View):
 
 # Vue pour ajouter un dislike sur un post
 class CommentDislike(LoginRequiredMixin, View):
+    # même principe que la vue Like
     def post(self, request, pk, *args, **kwargs):
         comment = Comment.objects.get(pk=pk)
 
