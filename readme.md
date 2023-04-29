@@ -16,7 +16,7 @@
 
 `LGMedia` avec Django est une application visant à créer un réseau social simpliste destiné aux lycéens du LGM, à l'aide du framework Django[^1], ce projet comportera donc de la programmation objet et une base de données.
 
-![Logo](https://imgbb.com/][img]https://i.ibb.co/Mk2t2xY/Favicon-SM.png)
+[![Favicon-SM.png](https://i.postimg.cc/pXGLLPFH/Favicon-SM.png)](https://postimg.cc/SJ9hZFdT)
 
 [^1]: Django peut être séparé en deux parties clés : les URLs et les vues. Ce sont deux concepts pour gérer les requêtes des utilisateurs. Les URLs sont des adresses web uniques qui identifient une vue dans votre application web. Les vues sont des fonctions Python qui répondent aux requêtes des utilisateurs et renvoient une réponse HTTP, généralement une page web.
 
