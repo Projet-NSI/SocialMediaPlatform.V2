@@ -323,8 +323,6 @@ class Comment(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
     auteur = models.ForeignKey(User, on_delete=models.CASCADE)
     sendingTime = models.DateTimeField(default=timezone.now)
-    likes = models.ManyToManyField(User, blank=True, related_name='comment_likes')
-    dislikes = models.ManyToManyField(User, blank=True, related_name='comment_dislikes')
 ```
 
 ### Formulaire
@@ -564,6 +562,8 @@ urlpatterns = [
 
 ### Mise à jour des modèles `Post` et `Comment`
 
+Nous devons rajouter les likes et les dislikes sous forme de clès étrangères `ManyToManyFields()`, qui peuvent contenir plusieurs tables `User`.
+
 ```
 class Post(models.Model):
     idPost = models.AutoField(primary_key=True)
@@ -573,6 +573,15 @@ class Post(models.Model):
     auteur = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, blank=True, related_name='likes')
     dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
+
+class Comment(models.Model):
+    comment = models.TextField()
+    contenu = models.DateTimeField(default=timezone.now)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    auteur = models.ForeignKey(User, on_delete=models.CASCADE)
+    sendingTime = models.DateTimeField(default=timezone.now)
+    likes = models.ManyToManyField(User, blank=True, related_name='comment_likes')
+    dislikes = models.ManyToManyField(User, blank=True, related_name='comment_dislikes')
 ```
 
 > Remarques : Les `ManyToManyFields()` sont un type de champ de modèle dans Django qui permettent de créer une relation many-to-many entre deux modèles. Cela signifie qu'un élément dans le premier modèle peut être lié à plusieurs éléments dans le deuxième modèle, et vice versa. C'est comme une relation (0,n) avec la table User. Les `OneToOneFields()` sont donc l'opposé des ManyToManyFields().
@@ -644,6 +653,8 @@ urlpatterns = [
 ## Gestion des abonnements:
 
 ### Mise à jour du modèle `UserProfile` 
+
+Nous devons rajouter les followers sous forme de clès étrangères `ManyToManyFields()`, qui peuvent contenir plusieurs tables `User`.
 
 ```
 class UserProfile(models.Model):
