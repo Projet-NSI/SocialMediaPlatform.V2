@@ -32,7 +32,11 @@
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{ request.path }}"> <!--retourne sur la page actuelle après le clic-->
                     <button style="background-color: transparent; border: none; box-shadow: none;" type="submit">
+                        {% if request.user in post.likes.all %}
+                        <i class="fa-solid fa-thumbs-up"> <span>{{ post.likes.all.count }}</span></i>
+                        {% else %}
                         <i class="far fa-thumbs-up"> <span>{{ post.likes.all.count }}</span></i> <!--count permet de retourner la longueur de la liste des likes-->
+                        {% endif %}
                     </button>
                 </form>
 
@@ -40,7 +44,11 @@
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{ request.path }}"> <!--retourne sur la page actuelle après le clic-->
                     <button style="background-color: transparent; border: none; box-shadow: none;" type="submit">
+                        {% if request.user in post.dislikes.all %}
+                        <i class="fa-solid fa-thumbs-down"> <span>{{ post.dislikes.all.count }}</span></i>
+                        {% else %}
                         <i class="far fa-thumbs-down"> <span>{{ post.dislikes.all.count }}</span></i> <!--count permet de retourner la longueur de la liste des likes-->
+                        {% endif %}
                     </button>
                 </form>
             </div>
@@ -83,7 +91,11 @@
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{ request.path }}"> <!--retourne sur la page actuelle après le clic-->
                     <button style="background-color: transparent; border: none; box-shadow: none;" type="submit">
+                        {% if request.user in comment.likes.all %}
+                        <i class="fa-solid fa-thumbs-up"> <span>{{ comment.likes.all.count }}</span></i>
+                        {% else %}
                         <i class="far fa-thumbs-up"> <span>{{ comment.likes.all.count }}</span></i> <!--count permet de retourner la longueur de la liste des likes-->
+                        {% endif %}
                     </button>
                 </form>
 
@@ -91,7 +103,11 @@
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{ request.path }}"> <!--retourne sur la page actuelle après le clic-->
                     <button style="background-color: transparent; border: none; box-shadow: none;" type="submit">
+                        {% if request.user in comment.dislikes.all %}
+                        <i class="fa-solid fa-thumbs-down"> <span>{{ comment.dislikes.all.count }}</span></i>
+                        {% else %}
                         <i class="far fa-thumbs-down"> <span>{{ comment.dislikes.all.count }}</span></i> <!--count permet de retourner la longueur de la liste des likes-->
+                        {% endif %}
                     </button>
                 </form>
             </div>
