@@ -84,17 +84,20 @@ class PostDetailView(LoginRequiredMixin, View):
 
 class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post # On défini le modèle de l'objet modifié
-    fields = ['contenu'] # On défini l'attribut du modèle de l'objet modifié
-    template_name = 'social/post_edit.html' # sert à spécifier le nom de la page modèle à utiliser pour afficher la page d'édition des publications (Post). 
+    fields = ['contenu', 'image'] # On défini l'attribut du modèle de l'objet modifié
+    template_name = 'social/post_edit.html' 
+    # template_name sert à spécifier le nom de la page modèle à utiliser pour afficher la page d'édition des publications (Post). 
     
-    # méthode de la classe UpdateView appelée lorsque la mise à jour d'un objet est réussie. Dans ce cas, elle redirige l'utilisateur vers la vue de détail de l'objet mis à jour, ici post_detail.
+    # méthode de la classe UpdateView appelée lorsque la mise à jour d'un objet est réussie. 
+    # Dans ce cas, elle redirige l'utilisateur vers la vue de détail de l'objet mis à jour, ici post_detail.
     def get_success_url(self):
          # Clé primaire du post mis à jour
         pk = self.kwargs['pk']
 
         # génére (ou retourne) l'URL de redirection en utilisant le nom relatif de l'URL
         return reverse_lazy('post-detail', kwargs={'pk': pk})
-        # L'identifiant du post doit être inclus dans l'URL de redirection, car la vue de détail du post est la page à laquelle l'utilisateur sera redirigé après avoir mis à jour son post.
+        # L'identifiant du post doit être inclus dans l'URL de redirection, 
+        # car la vue de détail du post est la page à laquelle l'utilisateur sera redirigé après avoir mis à jour son post.
         # Cela garantit que l'utilisateur sera redirigé vers la bonne page après la mise à jour du post.
 
     def test_func(self): # Vérifie si l'utilisateur est autorisé à effectuer l'action à l'aide de la méthode test_func
