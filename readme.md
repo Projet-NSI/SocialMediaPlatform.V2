@@ -216,9 +216,11 @@ class Post(models.Model):
     image = models.ImageField(upload_to='uploads/post_photos', blank=True, null=True)
     sendingTime = models.DateTimeField(default=timezone.now)
     auteur = models.ForeignKey(User, on_delete=models.CASCADE)
-    likes = models.ManyToManyField(User, blank=True, related_name='likes')
-    dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
 ```
+
+> Remarques : l'option `blank=True` est un paramètre que l'on peut ajouter aux champs de modèles pour spécifier que le champ peut être laissé vide dans le formulaire de création ou de modification d'objet.
+
+> l'option `null=True` dans un champ de modèle indique que la valeur de ce champ peut être nulle dans la base de données.
 
 ### Pages HTML
 
@@ -478,8 +480,6 @@ urlpatterns = [
 
 `UserProfile` est le modèle pour stocker les profils.
 
-La vue `ProfileView` permet de récupérer et d'afficher les informations liées au profil d'un utilisateur en particulier.
-
 ```
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, primary_key=True, verbose_name='user', related_name='profile', on_delete=models.CASCADE)
@@ -488,11 +488,36 @@ class UserProfile(models.Model):
 	birth_date=models.DateField(null=True, blank=True)
 	location = models.CharField(max_length=100, blank=True, null=True)
 	picture = models.ImageField(upload_to='uploads/profile_pictures', default='uploads/profile_pictures/default.png', blank=True)
-	followers = models.ManyToManyField(User, blank=True, related_name='followers')
 ```
-> héritage de `UpdateView` comme dans les mises à jour de posts et commentaires
 
-Elle utilise l'objet `UserProfile` qui est lié à l'utilisateur grâce à la clé étrangère `user` pour récupérer le profil en question. Ensuite, elle récupère tous les posts écrits par cet utilisateur en les filtrant à l'aide de la méthode `filter` de l'objet `Post`. La vue récupère également la liste des abonnés du profil et calcule le nombre total d'abonnés. Enfin, elle vérifie si l'utilisateur connecté est abonné au profil en question et retourne toutes ces informations dans le contexte pour être utilisées dans le template `profile.html`.
+> Remarques : Les OneToOneFields() sont l'opposé des ManyToManyFields() puisqu'il ne peut y avoir qu'un profil pour chaques utilisateurs, soit une relation (1,1).
+
+### Décorateurs 
+
+Les décorateurs sont des fonctions qui prennent une autre fonction en argument et étendent le comportement de cette fonction sans la modifier explicitement. Dans cet exemple de modèle pour les profils des utilisateurs, les décorateurs sont utilisés pour définir des actions à effectuer avant ou après la création ou la mise à jour d'un objet User.
+
+Le premier décorateur @receiver(post_save, sender=User) est appelé après la sauvegarde d'un objet User et crée un UserProfile associé à cet utilisateur s'il n'existe pas déjà.
+
+Le deuxième décorateur @receiver(post_save, sender=User) est appelé après la sauvegarde d'un objet User et met à jour le profil associé à cet utilisateur.
+
+```
+@receiver(post_save, sender=User) #décorateur de Django
+def create_user_profile(sender, instance, created, **kwargs):
+	if created:
+		UserProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User) #décorateur de Django
+def save_user_profile(sender, instance, **kwargs):
+	instance.profile.save()
+```
+
+Ces décorateurs sont basés sur une fonction de réception, qui est appelée lorsque l'événement spécifié se produit. La fonction create_user_profile crée un nouveau profil d'utilisateur en utilisant l'objet User qui vient d'être créé, et la fonction save_user_profile enregistre les modifications apportées à l'objet User en mettant à jour le profil associé.
+
+En utilisant ces décorateurs, l'application peut s'assurer que les profils des utilisateurs sont toujours créés et mis à jour correctement chaque fois qu'un objet User est créé ou modifié.
+
+### Création de la vue
+
+La vue `ProfileView` permet de récupérer et d'afficher les informations liées au profil d'un utilisateur en particulier.
 
 ```
 class ProfileView(View):
@@ -521,6 +546,8 @@ class ProfileView(View):
         return render(request, 'social/profile.html', context)
 ```
 
+Elle utilise l'objet `UserProfile` qui est lié à l'utilisateur grâce à la clé étrangère `user` pour récupérer le profil en question. Ensuite, elle récupère tous les posts écrits par cet utilisateur en les filtrant à l'aide de la méthode `filter` de l'objet `Post`. La vue récupère également la liste des abonnés du profil et calcule le nombre total d'abonnés. Enfin, elle vérifie si l'utilisateur connecté est abonné au profil en question et retourne toutes ces informations dans le contexte pour être utilisées dans le template `profile.html`.
+
 Nous devons créer la page `profile.html` pour afficher le profil de l'utilisateur.
 
 Il nous reste plus qu'à configurer l'url :
@@ -534,6 +561,25 @@ urlpatterns = [
 ```
 
 ## Liker/Disliker des posts et commentaires:
+
+### Mise à jour des modèles `Post` et `Comment`
+
+```
+class Post(models.Model):
+    idPost = models.AutoField(primary_key=True)
+    contenu = models.TextField()
+    image = models.ImageField(upload_to='uploads/post_photos', blank=True, null=True)
+    sendingTime = models.DateTimeField(default=timezone.now)
+    auteur = models.ForeignKey(User, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, blank=True, related_name='likes')
+    dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
+```
+
+> Remarques : Les `ManyToManyFields()` sont un type de champ de modèle dans Django qui permettent de créer une relation many-to-many entre deux modèles. Cela signifie qu'un élément dans le premier modèle peut être lié à plusieurs éléments dans le deuxième modèle, et vice versa. C'est comme une relation (0,n) avec la table User. Les `OneToOneFields()` sont donc l'opposé des ManyToManyFields().
+
+> Le paramètre `related_name='likes'` est utilisé pour spécifier le nom de l'attribut qui sera utilisé pour accéder à la liste des posts qui ont été 'likés' par un utilisateur spécifique. Ce paramètre est obligatoire car il y a plusieurs clés étrangères ManyToMany entre les modèles User et Comment.
+
+### Création de la vue
 
 Les vues permettent à un utilisateur connecté de "liker" ou "disliker" un post. La vue `Like` est appelée lorsqu'un utilisateur clique sur le bouton "Like" d'un post, et la vue `Dislike` est appelée lorsqu'il clique sur le bouton "Dislike". Dans chaque vue, la méthode `post` est utilisée pour traiter la demande POST envoyée par le formulaire.
 
@@ -596,6 +642,21 @@ urlpatterns = [
 ```
 
 ## Gestion des abonnements:
+
+### Mise à jour du modèle `UserProfile` 
+
+```
+class UserProfile(models.Model):
+	user = models.OneToOneField(User, primary_key=True, verbose_name='user', related_name='profile', on_delete=models.CASCADE)
+	name = models.CharField(max_length=30, blank=True, null=True)
+	bio = models.TextField(max_length=500, blank=True, null=True)
+	birth_date=models.DateField(null=True, blank=True)
+	location = models.CharField(max_length=100, blank=True, null=True)
+	picture = models.ImageField(upload_to='uploads/profile_pictures', default='uploads/profile_pictures/default.png', blank=True)
+	followers = models.ManyToManyField(User, blank=True, related_name='followers')
+```
+
+### Création des vues 
 
 Les vues "AddFollower" et "RemoveFollower" sont des vues qui permettent d'ajouter ou de supprimer un abonnement à un utilisateur.
 
