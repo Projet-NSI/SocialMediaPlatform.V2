@@ -558,6 +558,42 @@ urlpatterns = [
 ]
 ```
 
+## Mise à jour de profils
+
+Un utilisateur doit évidemment avoir la possibilité de modifier son profil (sa bio, photo de profil, etc.)
+
+### Création de la vue 
+
+La vue `ProfileEditView` prends le même principe que les modifications de posts et commentaires
+
+```
+class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = UserProfile 
+    fields = ['name', 'bio', 'birth_date', 'location', 'picture'] 
+    template_name = 'social/profile_edit.html'
+
+    # méthode de la classe UpdateView appelée lorsque la mise à jour du profil est réussie. Dans ce cas, elle redirige l'utilisateur vers le profil.
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return reverse_lazy('profile', kwargs={'pk': pk})
+
+    def test_func(self): #test de vérification
+        profile = self.get_object()
+        return self.request.user == profile.user
+```
+
+Nous devons créer la page `profile_edit.html` pour afficher le profil de l'utilisateur.
+
+Il nous reste plus qu'à configurer l'url :
+
+```
+urlpatterns = [
+    ...
+    path('profile/edit/<int:pk>/', ProfileEditView.as_view(), name='profile-edit'),
+    ...
+]
+```
+
 ## Liker/Disliker des posts et commentaires:
 
 ### Mise à jour des modèles `Post` et `Comment`
