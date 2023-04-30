@@ -67,8 +67,12 @@
     {% for comment in comments %}
     <div class="row justify-content-center mt-3 mb-5">
         <div class="col-md-5 col-sm-12 border-bottom">
-            <p>
-                <a href="" class="text-primary post-link">@{{ comment.auteur }}</a> {{ comment.sendingTime }}
+            <a href="{% url 'profile' comment.auteur.profile.pk %}">
+                <img class="round-circle post-pdp" height="30" width="30" src="{{ comment.auteur.profile.picture.url }}" />
+            </a>
+            <p class="post-text">
+                <a class="text-primary post-link" href="{% url 'profile' comment.auteur.profile.pk %}">@{{ comment.auteur }}</a> 
+                {{ comment.sendingTime }}
                 {% if request.user == comment.auteur %}
                 <a href="{% url 'comment-delete' post.pk comment.pk %}" style="color: #333;"><i class="fas fa-trash"></i></a>
                 {% endif %}

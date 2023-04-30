@@ -70,7 +70,8 @@ class PostDetailView(LoginRequiredMixin, View):
             new_comment.post = post #on l'associe également à l'objet Post correspondant
             new_comment.save() #Sauvegarde le commentaire dans la base de données
         
-        comments = Comment.objects.filter(post=post).order_by('-sendingTime') # SELECT post FROM Comment where post = post ORDER BY sendingTime
+        comments = Comment.objects.filter(post=post).order_by('-sendingTime') 
+        # SELECT post FROM Comment where post = post ORDER BY sendingTime
 
         context = {
             'post': post,
@@ -123,7 +124,8 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = 'social/comment_delete.html'
 
     def get_success_url(self):
-        pk = self.kwargs['post_pk'] # récupére l'identifiant du post à partir duquel l'utilisateur a supprimé un commentaire.
+        # récupére l'identifiant du post à partir duquel l'utilisateur a supprimé un commentaire.
+        pk = self.kwargs['post_pk'] 
         
         # nous créons une URL en utilisant la fonction reverse_lazy. Cette URL est générée à partir du nom relatif de l'URL (post-detail)
         return reverse_lazy('post-detail', kwargs={'pk': pk}) 
