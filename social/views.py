@@ -304,7 +304,7 @@ class CommentLike(LoginRequiredMixin, View):
         next = request.POST.get('next','/')
         return HttpResponseRedirect(next)
 
-# Vue pour ajouter un dislike sur un post
+# Vue pour ajouter un dislike sur un commentaire
 class CommentDislike(LoginRequiredMixin, View):
     # même principe que la vue Like
     def post(self, request, pk, *args, **kwargs):
