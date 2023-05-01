@@ -509,6 +509,16 @@ def save_user_profile(sender, instance, **kwargs):
 	instance.profile.save()
 ```
 
+> Remarques : `sender` est le modèle envoyant le signal. Dans ce cas-ci, User est le modèle qui envoie le signal. Par conséquent, `sender=User`.
+
+> `instance` est l'instance du modèle qui vient d'être sauvegardé. Par exemple, lorsqu'un nouvel utilisateur est créé, l'instance `User` nouvellement créée est passée à la fonction de rappel.
+
+> `created` est un booléen qui indique si une nouvelle instance du modèle vient d'être créée (`created=True`) ou si une instance existante vient d'être mise à jour (`created=False`).
+
+instance : l'instance du modèle qui vient d'être sauvegardé. Par exemple, lorsqu'un nouvel utilisateur est créé, l'instance User nouvellement créée est passée à la fonction de rappel.
+
+created : un booléen qui indique si une nouvelle instance du modèle vient d'être créée (created=True) ou si une instance existante vient d'être mise à jour (created=False). Par exemple, lorsqu'un nouvel utilisateur est créé, created=True est passé à la fonction de rappel, tandis que lorsqu'un utilisateur existant est mis à jour, created=False est passé.
+
 Ces décorateurs sont basés sur une fonction de réception, qui est appelée lorsque l'événement spécifié se produit. La fonction create_user_profile crée un nouveau profil d'utilisateur en utilisant l'objet User qui vient d'être créé, et la fonction save_user_profile enregistre les modifications apportées à l'objet User en mettant à jour le profil associé.
 
 En utilisant ces décorateurs, l'application peut s'assurer que les profils des utilisateurs sont toujours créés et mis à jour correctement chaque fois qu'un objet User est créé ou modifié.
