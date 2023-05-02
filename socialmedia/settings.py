@@ -144,6 +144,7 @@ USE_TZ = True
 STATICFILES_DIRS = [
     BASE_DIR / "static", #Dossier parent (par défaut) pour les fichiers statiques
 ]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATIC_URL = '/static/'
 
